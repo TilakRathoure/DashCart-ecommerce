@@ -1,6 +1,8 @@
 import express from "express";
 
 import userRoute from "./routes/user.js";
+import productRoute from "./routes/products.js";
+
 import { connectDB } from "./utils/features.js";
 import { errorMiddleware } from "./middlewares/error.js";
 
@@ -9,6 +11,10 @@ const port=4000;
 
 connectDB(); 
 app.use(express.json())
+app.use(errorMiddleware);
+
+app.use("/api/v1/user",userRoute);
+app.use("/api/v1/product,",productRoute);
 
 app.get("/",(req,res)=>{
 
@@ -16,10 +22,6 @@ app.get("/",(req,res)=>{
 
 })
 
-
-app.use("/api/v1/user",userRoute);
-
-app.use(errorMiddleware);
 
 
 

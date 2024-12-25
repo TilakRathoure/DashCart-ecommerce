@@ -58,3 +58,20 @@ export const deleteUser = async (req, res, next) => {
         next(new ErrorHandler("unknown error", 404));
     }
 };
+export const getUser = async (req, res, next) => {
+    try {
+        const { id } = req.params;
+        if (!id)
+            return next(new ErrorHandler("bad request", 505));
+        const user = User.findById(id);
+        if (!user)
+            return next(new ErrorHandler("user doesnt exist", 404));
+        return res.status(202).json({
+            message: "success",
+            data: user
+        });
+    }
+    catch (error) {
+        next(new ErrorHandler(error, 404));
+    }
+};
