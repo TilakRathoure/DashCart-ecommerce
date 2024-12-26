@@ -1,7 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { redis, redisTTL } from "../app.js";
 import { Product } from "../models/products.js";
-import { Review } from "../models/review.js";
 import { User } from "../models/user.js";
 import {
     BaseQuery,

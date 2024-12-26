@@ -1,6 +1,4 @@
-import { redis, redisTTL } from "../app.js";
 import { Product } from "../models/products.js";
-import { Review } from "../models/review.js";
 import { User } from "../models/user.js";
 import { deleteFromCloudinary, findAverageRatings, invalidateCache, uploadToCloudinary, } from "../utils/features.js";
 import ErrorHandler from "../utils/utility-class.js";

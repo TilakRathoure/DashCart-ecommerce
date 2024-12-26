@@ -1,8 +1,8 @@
 import mongoose from "mongoose"
 
-export const connectDB=()=>{
+export const connectDB=(url:string)=>{
 
-    mongoose.connect("mongodb://localhost:27017/",{
+    mongoose.connect(url,{
 
         dbName:"Ecommerce_25"
 
