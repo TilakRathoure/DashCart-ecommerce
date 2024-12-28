@@ -11,7 +11,6 @@ config({
 });
 const port = process.env.PORT || 4000;
 const mongoURI = process.env.MONGO_URI || "";
-const clientURL = process.env.CLIENT_URL || "";
 connectDB(mongoURI);
 const app = express();
 app.use(express.json());
