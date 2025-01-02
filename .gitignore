@@ -1,0 +1,9 @@
+node_modules
+ecommerce-backend/node_modules
+ecommerce-frontend/node_modules
+
+ecommerce-backend/dist
+
+
+ecommerce-frontend/.env
+ecommerce-backend/.env

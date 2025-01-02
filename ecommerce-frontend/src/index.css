@@ -1,0 +1,25 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.backgco {
+    @apply border border-gray-700 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900;
+  }
+
+table img{
+    margin: auto;
+    width: 70px;
+    height: 70px;
+    min-width: 70px;
+    min-height: 70px;
+    object-fit: contain;
+}
+table a{
+
+    background-color: rgb(25, 223, 223);
+    padding: 7px;
+    border-radius:30%;
+    color: rgb(3, 130, 104);
+
+}
+
