@@ -2,7 +2,7 @@ import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { Skeleton } from "../components/loader";
-import ProductCard from "../components/product-card";
+import ProductCard from "../components/Product-card";
 import { useLatestProductsQuery } from "../redux/api/productAPI";
 import { addToCart } from "../redux/reducer/cartReducer";
 import { CartItem } from "../types/types";

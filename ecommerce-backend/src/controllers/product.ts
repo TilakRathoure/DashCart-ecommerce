@@ -1,7 +1,7 @@
 import { Request } from "express";
 import { redis, redisTTL } from "../app.js";
 import { TryCatch } from "../middlewares/error.js";
-import { Product } from "../models/product.js";
+import { Product } from "../models/products.js";
 import {
   BaseQuery,
   NewProductRequestBody,
