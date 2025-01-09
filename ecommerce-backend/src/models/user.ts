@@ -1,61 +1,73 @@
 import mongoose from "mongoose";
-import validator from "validator"
+import validator from "validator";
 
-const schema=new mongoose.Schema(
+interface IUser extends Document {
+  _id: string;
+  name: string;
+  email: string;
+  photo: string;
+  role: "admin" | "user";
+  gender: "male" | "female";
+  dob: Date;
+  createdAt: Date;
+  updatedAt: Date;
+  //   Virtual Attribute
+  age: number;
+}
 
-    {
-        _id:{
-            type:String,
-            required:[true,"Please enter ID"],
-        },
-        name:{
-            type:String,
-            required:[true,"Please Add name"],
-        },
-        email:{
-            type:String,
-            unique:[true,"email already exists"],
-            required:[true,"Please enter email"],
-            vaildate :validator.default.isEmail,
-
-        },
-        photo:{
-            type:String,
-            required:[true,"Please add Photo"]
-        },
-        role:{
-            type:String,
-            enum:["admin","user"],
-            default:"user",
-
-        },
-        gender:{
-            type:String,
-            enum:["male","female"],
-            required:[true,"Please enter your gender"]
-
-        },
-        dob:{
-            type:Date,
-            required:[true,"Please enter date of birth"],
-        }
-    },{
-        timestamps:true,
-    }
-
+const schema = new mongoose.Schema(
+  {
+    _id: {
+      type: String,
+      required: [true, "Please enter ID"],
+    },
+    name: {
+      type: String,
+      required: [true, "Please enter Name"],
+    },
+    email: {
+      type: String,
+      unique: [true, "Email already Exist"],
+      required: [true, "Please enter Name"],
+      validate: validator.default.isEmail,
+    },
+    photo: {
+      type: String,
+      required: [true, "Please add Photo"],
+    },
+    role: {
+      type: String,
+      enum: ["admin", "user"],
+      default: "user",
+    },
+    gender: {
+      type: String,
+      enum: ["male", "female"],
+      required: [true, "Please enter Gender"],
+    },
+    dob: {
+      type: Date,
+      required: [true, "Please enter Date of birth"],
+    },
+  },
+  {
+    timestamps: true,
+  }
 );
 
-schema.virtual("age").get(function(){
-    const today=new Date();
-    const dob=this.dob;
-    let age=today.getFullYear()-dob.getFullYear();
-    let monthDiff=today.getMonth()-dob.getMonth();
+schema.virtual("age").get(function () {
+  const today = new Date();
+  const dob = this.dob;
+  let age = today.getFullYear() - dob.getFullYear();
 
-    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < dob.getDate())) {
-        age--;
-    }
+  if (
+    today.getMonth() < dob.getMonth() ||
+    (today.getMonth() === dob.getMonth() && today.getDate() < dob.getDate())
+  ) {
+    age--;
+  }
 
-    return age;
-})
+  return age;
+});
 
-export const User=mongoose.model("User",schema);
+export const User = mongoose.model<IUser>("User", schema);

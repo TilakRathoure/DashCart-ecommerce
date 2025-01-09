@@ -7,7 +7,7 @@ export const errorMiddleware = (
   req: Request,
   res: Response,
   next: NextFunction
-):any => {
+):Response<any, Record<string, any>> => {
   err.message ||= "Internal Server Error";
   err.statusCode ||= 500;
 
@@ -20,7 +20,7 @@ export const errorMiddleware = (
 };
 
 export const TryCatch =
-  (func: ControllerType):any =>
+  (func: ControllerType) =>
   (req: Request, res: Response, next: NextFunction) => {
     return Promise.resolve(func(req, res, next)).catch(next);
   };
