@@ -1,5 +1,5 @@
 import express from "express";
-import { adminOnly } from "../middlewares/auth.js";
+import { adminOnly } from "../middlewares/authentication.js";
 import {
   allCoupons,
   applyDiscount,

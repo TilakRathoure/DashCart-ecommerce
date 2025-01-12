@@ -3,8 +3,8 @@ import { productAPI } from "./api/productAPI.ts";
 import { userAPI } from "./api/userAPI.ts";
 import { userReducer } from "./reducer/userReducer";
 import { cartReducer } from "./reducer/cartReducer";
-import { orderApi } from "./api/orderAPI";
-import { dashboardApi } from "./api/dashboardAPI";
+import { orderApi } from "./api/orderAPI.ts";
+import { dashboardApi } from "./api/dashboardAPIs.ts";
 
 export const server = import.meta.env.VITE_SERVER;
 

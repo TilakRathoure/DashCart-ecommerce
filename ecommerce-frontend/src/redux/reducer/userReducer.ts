@@ -11,6 +11,11 @@ export const userReducer = createSlice({
   name: "userReducer",
   initialState,
   reducers: {
+
+    loader:(state,action:PayloadAction<boolean>)=>{
+      state.loading=action.payload;
+    },
+
     userExist: (state, action: PayloadAction<User>) => {
       state.loading = false;
       state.user = action.payload;
