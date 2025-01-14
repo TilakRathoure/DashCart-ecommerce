@@ -1,8 +1,14 @@
-import { ReactElement, useState } from "react";
+import { ReactElement, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import AdminSidebar from "../../components/admin/AdminSidebar";
 import TableHOC from "../../components/admin/TableHOC";
 import { Column } from "react-table";
+import { RootState, server } from "../../redux/store";
+import { useSelector } from "react-redux";
+import { useAllProductsQuery } from "../../redux/api/productAPI";
+import { CustomError } from "../../types/api-types";
+import toast from "react-hot-toast";
+import { Skeleton } from "../../components/Loader";
 
 
 interface DataType{
@@ -21,78 +27,42 @@ const columns:Column<DataType>[]=[
   {Header: "Stock",accessor: "stock"},
   {Header: "Action",accessor: "action"},
 
-
 ]
-const img =
-  "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8c2hvZXN8ZW58MHx8MHx8&w=1000&q=804";
-
-const img2 = "https://m.media-amazon.com/images/I/514T0SvwkHL._SL1500_.jpg";
-
-const arr: DataType[] = [
-  {
-    photo: <img src={img} alt="Shoes" />,
-    name: "Puma Shoes Air 2023",
-    price: 690,
-    stock: 3,
-    action: <Link to="/admin/products/sajknaskd">Manage</Link>,
-  },
-
-  {
-    photo: <img src={img2} alt="Shoes" />,
-    name: "Macbook",
-    price: 232223,
-    stock: 213,
-    action: <Link to="/admin/products/sdaskdnkasjdn">Manage</Link>,
-  },
-  {
-    photo: <img src={img} alt="Shoes" />,
-    name: "Puma Shoes Air 2023",
-    price: 690,
-    stock: 3,
-    action: <Link to="/admin/products/sajknaskd">Manage</Link>,
-  },
-
-  {
-    photo: <img src={img2} alt="Shoes" />,
-    name: "Macbook",
-    price: 232223,
-    stock: 213,
-    action: <Link to="/admin/products/sdaskdnkasjdn">Manage</Link>,
-  },
-  {
-    photo: <img src={img} alt="Shoes" />,
-    name: "Puma Shoes Air 2023",
-    price: 690,
-    stock: 3,
-    action: <Link to="/admin/products/sajknaskd">Manage</Link>,
-  },
-
-  {
-    photo: <img src={img2} alt="Shoes" />,
-    name: "Macbook",
-    price: 232223,
-    stock: 213,
-    action: <Link to="/admin/products/sdaskdnkasjdn">Manage</Link>,
-  },
-  {
-    photo: <img src={img2} alt="Shoes" />,
-    name: "Macbook",
-    price: 232223,
-    stock: 213,
-    action: <Link to="/admin/products/sdaskdnkasjdn">Manage</Link>,
-  },
-];
 
 const Products = () => {
 
-  const [data]= useState<DataType[]>(arr)
+  const { user } = useSelector((state: RootState) => state.userReducer);
 
-  const Table=TableHOC<DataType>(columns,
-    data,
+  const { isLoading, isError, error, data } = useAllProductsQuery(user!._id!);
+
+  const [rows, setRows] = useState<DataType[]>([]);
+
+
+
+  useEffect(() => {
+    if (data)
+      setRows(
+        data.products.map((i) => ({
+          photo: <img src={`${server}/${i.photo}`} />,
+          name: i.name,
+          price: i.price,
+          stock: i.stock,
+          action: <Link to={`/admin/product/${i._id}`}>Manage</Link>,
+        }))
+      );
+  }, [data]);
+
+
+  if(isError){
+    const err= error as CustomError;
+    toast.error(err.data.message);
+  }
+
+  const Table=TableHOC<DataType>(
+    columns,rows,
     "dashboard-product-box",
     "Products",
-    true
-
+    rows.length>6
   )();
 
   return (
@@ -106,8 +76,8 @@ const Products = () => {
 
     <div className="md:w-3/4 p-7 rounded-lg">
 
-    {Table}
-
+    {
+      isLoading? <Skeleton length={20}/>: Table}
     </div>
 
     </div>
