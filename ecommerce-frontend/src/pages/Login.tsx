@@ -47,32 +47,41 @@ const Login = () => {
   };
 
   return (
-    <div className="login">
-      <main>
-        <h1 className="heading">Login</h1>
+    <div className="h-[90vh] flex flex-col items-center justify-center">
+      <main className="w-full h-[80%] max-w-md p-8 shadow-lg flex flex-col items-center justify-center">
+        <h1 className="text-2xl font-bold mb-6">Login</h1>
 
-        <div>
-          <label>Gender</label>
-          <select value={gender} onChange={(e) => setGender(e.target.value)}>
+        <div className="w-full flex flex-col gap-2 mb-4">
+          <label className="font-medium">Gender</label>
+          <select
+            value={gender}
+            onChange={(e) => setGender(e.target.value)}
+            className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-300"
+          >
             <option value="">Select Gender</option>
             <option value="male">Male</option>
             <option value="female">Female</option>
           </select>
         </div>
 
-        <div>
-          <label>Date of birth</label>
+        <div className="w-full flex flex-col gap-2 mb-4">
+          <label className="font-medium">Date of Birth</label>
           <input
             type="date"
             value={date}
             onChange={(e) => setDate(e.target.value)}
+            className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-300"
           />
         </div>
 
-        <div>
-          <p>Already Signed In Once</p>
-          <button onClick={loginHandler}>
-            <FcGoogle /> <span>Sign in with Google</span>
+        <div className="w-full text-center">
+          <p className="mb-6 text-sm">Already Signed In Once</p>
+          <button
+            onClick={loginHandler}
+            className="w-3/4 mx-auto h-12 flex items-center justify-center bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors border border-blue-600"
+          >
+            <FcGoogle className="bg-white rounded-full p-1 w-10 h-10 mr-2" />
+            <span className="text-lg">Sign in with Google</span>
           </button>
         </div>
       </main>

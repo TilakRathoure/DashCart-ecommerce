@@ -1,4 +1,4 @@
-import { NextFunction, Request } from "express";
+import { Request } from "express";
 import { TryCatch } from "../middlewares/error.js";
 import { NewOrderRequestBody } from "../types/types.js";
 import { Order } from "../models/order.js";

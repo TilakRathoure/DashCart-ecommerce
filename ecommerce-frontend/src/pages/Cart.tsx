@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { VscError } from "react-icons/vsc";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import CartItemCard from "../components/cart-item";
+import CartItemCard from "../components/CartItemcard";
 import {
   addToCart,
   calculatePrice,
@@ -68,8 +68,8 @@ const Cart = () => {
   }, [cartItems]);
 
   return (
-    <div className="cart">
-      <main>
+    <div className="flex gap-16 p-8 h-[calc(100vh-4rem)]">
+      <main className="w-7/10 overflow-y-auto">
         {cartItems.length > 0 ? (
           cartItems.map((i, idx) => (
             <CartItemCard
@@ -81,17 +81,18 @@ const Cart = () => {
             />
           ))
         ) : (
-          <h1>No Items Added</h1>
+          <h1 className="text-center text-2xl">No Items Added</h1>
         )}
       </main>
-      <aside>
-        <p>Subtotal: ₹{subtotal}</p>
-        <p>Shipping Charges: ₹{shippingCharges}</p>
-        <p>Tax: ₹{tax}</p>
-        <p>
-          Discount: <em className="red"> - ₹{discount}</em>
+
+      <aside className="w-3/10 p-16 flex flex-col gap-6">
+        <p className="text-lg">Subtotal: ₹{subtotal}</p>
+        <p className="text-lg">Shipping Charges: ₹{shippingCharges}</p>
+        <p className="text-lg">Tax: ₹{tax}</p>
+        <p className="text-lg">
+          Discount: <em className="text-red-500"> - ₹{discount}</em>
         </p>
-        <p>
+        <p className="text-lg font-bold">
           <b>Total: ₹{total}</b>
         </p>
 
@@ -100,20 +101,28 @@ const Cart = () => {
           placeholder="Coupon Code"
           value={couponCode}
           onChange={(e) => setCouponCode(e.target.value)}
+          className="p-4 border border-gray-300 rounded-md mt-8"
         />
 
         {couponCode &&
           (isValidCouponCode ? (
-            <span className="green">
+            <span className="text-green-500">
               ₹{discount} off using the <code>{couponCode}</code>
             </span>
           ) : (
-            <span className="red">
+            <span className="text-red-500 flex items-center gap-1">
               Invalid Coupon <VscError />
             </span>
           ))}
 
-        {cartItems.length > 0 && <Link to="/shipping">Checkout</Link>}
+        {cartItems.length > 0 && (
+          <Link
+            to="/shipping"
+            className="bg-blue-500 text-white p-4 text-center rounded-md uppercase tracking-wide hover:opacity-80"
+          >
+            Checkout
+          </Link>
+        )}
       </aside>
     </div>
   );

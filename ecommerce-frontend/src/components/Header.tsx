@@ -30,41 +30,70 @@ const Header = ({ user }: PropsType) => {
   };
 
   return (
-    <nav className="header">
-      <Link onClick={() => setIsOpen(false)} to={"/"}>
+    <nav className="relative flex items-center justify-end space-x-4 p-4">
+      <Link
+        onClick={() => setIsOpen(false)}
+        to={"/"}
+        className="text-gray-700 hover:text-blue-600 text-xl tracking-wider"
+      >
         HOME
       </Link>
-      <Link onClick={() => setIsOpen(false)} to={"/search"}>
+      <Link
+        onClick={() => setIsOpen(false)}
+        to={"/search"}
+        className="text-gray-700 hover:text-blue-600 text-xl"
+      >
         <FaSearch />
       </Link>
-      <Link onClick={() => setIsOpen(false)} to={"/cart"}>
+      <Link
+        onClick={() => setIsOpen(false)}
+        to={"/cart"}
+        className="text-gray-700 hover:text-blue-600 text-xl"
+      >
         <FaShoppingBag />
       </Link>
 
       {user?._id ? (
         <>
-          <button onClick={() => setIsOpen((prev) => !prev)}>
+          <button
+            onClick={() => setIsOpen((prev) => !prev)}
+            className="text-gray-700 hover:text-blue-600 text-xl"
+          >
             <FaUser />
           </button>
-          <dialog open={isOpen}>
-            <div>
+          <dialog open={isOpen} className="border border-gray-300 rounded p-2 w-28 absolute top-0 right-0">
+            <div className="flex flex-col items-center space-y-1">
               {user.role === "admin" && (
-                <Link onClick={() => setIsOpen(false)} to="/admin/dashboard">
+                <Link
+                  onClick={() => setIsOpen(false)}
+                  to="/admin/dashboard"
+                  className="text-gray-700 hover:text-blue-600"
+                >
                   Admin
                 </Link>
               )}
 
-              <Link onClick={() => setIsOpen(false)} to="/orders">
+              <Link
+                onClick={() => setIsOpen(false)}
+                to="/orders"
+                className="text-gray-700 hover:text-blue-600"
+              >
                 Orders
               </Link>
-              <button onClick={logoutHandler}>
+              <button
+                onClick={logoutHandler}
+                className="text-gray-700 hover:text-blue-600"
+              >
                 <FaSignOutAlt />
               </button>
             </div>
           </dialog>
         </>
       ) : (
-        <Link to={"/login"}>
+        <Link
+          to={"/login"}
+          className="text-gray-700 hover:text-blue-600 text-xl"
+        >
           <FaSignInAlt />
         </Link>
       )}

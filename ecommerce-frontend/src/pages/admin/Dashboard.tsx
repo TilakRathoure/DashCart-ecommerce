@@ -5,15 +5,14 @@ import { HiTrendingUp, HiTrendingDown } from "react-icons/hi";
 import AdminSidebar from "../../components/admin/AdminSidebar";
 import { BarChart, DoughnutChart } from "../../components/admin/Chart";
 import DashboardTable from "../../components/admin/DashboardTable";
-import { Navigate } from "react-router-dom";
+// import { Navigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useStatsQuery } from "../../redux/api/dashboardAPIs";
 import { Skeleton } from "../../components/Loader";
 import {RootState} from "../../redux/store"
 import { getLastMonths } from "../../utils/features";
-
-const userImg =
-  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSJxA5cTf-5dh5Eusm0puHbvAhOrCRPtckzjA&usqp";
+import toast from "react-hot-toast";
+import userImg from "../../assets/admin/user.png"
 
 const { last6Months: months } = getLastMonths();
 
@@ -28,9 +27,9 @@ const Dashboard = () => {
 
   const { isLoading, data, isError } = useStatsQuery(user!._id!);
 
-  const stats = data!.stats!;
+  const stats = data?.stats || { changePercent: {}, count: {}, chart: {}, userRatio: {}, categoryCount: [], latestTransaction: [],order:{} ,product:{},user:{}};
 
-  if (isError) return <Navigate to={"/"} />;
+  if (isError) toast.error("error");
 
   return (
     <div className="flex h-screen text-gray-100 bg-opacity-50">
@@ -46,11 +45,11 @@ const Dashboard = () => {
             className="flex-grow border-none bg-transparent p-1 outline-none focus:border-none"
           />
           <FaRegBell />
-          <img className="w-7" src={user?.photo || userImg} alt="" />
+          <img  className="w-7 rounded-full" src={user?.photo || userImg} alt="" />
         </header>
 
         <div className="flex lg:gap-4 flex-wrap justify-center gap-2">
-          {isLoading ? (
+          {isLoading? (
             <Skeleton length={20} />
           ) : (
             <>
@@ -170,7 +169,7 @@ const CategoryItem = ({
 );
 
 const WidgetItem = ({ heading, color, graph, price }: dash) => (
-  <div className="flex border-2 border-gray-700 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 lg:w-[16rem] md:w-[15rem] w-[13rem] h-[8rem] rounded-xl p-4 justify-around">
+  <div key={heading} className="flex border-2 border-gray-700 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 lg:w-[16rem] md:w-[15rem] w-[13rem] h-[8rem] rounded-xl p-4 justify-around">
     <div className="flex flex-col ">
       <h1>{heading}</h1>
       <h1 className="text-2xl font-bold">

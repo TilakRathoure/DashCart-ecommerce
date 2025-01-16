@@ -1,12 +1,11 @@
 import { useState } from "react";
-import ProductCard from "../components/product-card";
+import ProductCard from "../components/Product-card";
 import {
   useCategoriesQuery,
   useSearchProductsQuery,
 } from "../redux/api/productAPI";
-import { CustomError } from "../types/api-types";
 import toast from "react-hot-toast";
-import { Skeleton } from "../components/loader";
+import { Skeleton } from "../components/Loader";
 import { CartItem } from "../types/types";
 import { addToCart } from "../redux/reducer/cartReducer";
 import { useDispatch } from "react-redux";
@@ -19,7 +18,6 @@ const Search = () => {
     data: categoriesResponse,
     isLoading: loadingCategories,
     isError,
-    error,
   } = useCategoriesQuery("");
 
   const [search, setSearch] = useState("");
@@ -32,7 +30,6 @@ const Search = () => {
     isLoading: productLoading,
     data: searchedData,
     isError: productIsError,
-    error: productError,
   } = useSearchProductsQuery({
     search,
     sort,
@@ -53,20 +50,25 @@ const Search = () => {
   const isNextPage = page < 4;
 
   if (isError) {
-    const err = error as CustomError;
-    toast.error(err.data.message);
+    toast.error("Error while fetching");
   }
   if (productIsError) {
-    const err = productError as CustomError;
-    toast.error(err.data.message);
+    toast.error("Error while fetching");
   }
+
   return (
-    <div className="product-search-page">
-      <aside>
-        <h2>Filters</h2>
+    <div className="flex p-8 space-x-8 min-h-[calc(100vh-6.5vh)]">
+      {/* Sidebar (Filters) */}
+      <aside className="min-w-[20rem] p-8 shadow-xl flex flex-col space-y-4">
+        <h2 className="text-3xl font-bold">Filters</h2>
+
         <div>
-          <h4>Sort</h4>
-          <select value={sort} onChange={(e) => setSort(e.target.value)}>
+          <h4 className="text-xl">Sort</h4>
+          <select
+            value={sort}
+            onChange={(e) => setSort(e.target.value)}
+            className="w-full p-2 border border-gray-400 rounded-xl mt-2"
+          >
             <option value="">None</option>
             <option value="asc">Price (Low to High)</option>
             <option value="dsc">Price (High to Low)</option>
@@ -74,21 +76,23 @@ const Search = () => {
         </div>
 
         <div>
-          <h4>Max Price: {maxPrice || ""}</h4>
+          <h4 className="text-xl">Max Price: ₹{maxPrice}</h4>
           <input
             type="range"
             min={100}
             max={100000}
             value={maxPrice}
             onChange={(e) => setMaxPrice(Number(e.target.value))}
+            className="w-full mt-2"
           />
         </div>
 
         <div>
-          <h4>Category</h4>
+          <h4 className="text-xl">Category</h4>
           <select
             value={category}
             onChange={(e) => setCategory(e.target.value)}
+            className="w-full p-2 border border-gray-400 rounded-xl mt-2"
           >
             <option value="">ALL</option>
             {!loadingCategories &&
@@ -100,19 +104,22 @@ const Search = () => {
           </select>
         </div>
       </aside>
-      <main>
-        <h1>Products</h1>
+
+      {/* Main Content (Products) */}
+      <main className="flex flex-col w-full p-8">
+        <h1 className="text-3xl font-bold mb-4">Products</h1>
         <input
           type="text"
           placeholder="Search by name..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
+          className="p-3 border border-gray-400 rounded-xl mb-4 text-xl"
         />
 
         {productLoading ? (
           <Skeleton length={10} />
         ) : (
-          <div className="search-product-list">
+          <div className="flex flex-wrap gap-8">
             {searchedData?.products.map((i) => (
               <ProductCard
                 key={i._id}
@@ -121,17 +128,18 @@ const Search = () => {
                 price={i.price}
                 stock={i.stock}
                 handler={addToCartHandler}
-                photos={i.photos}
+                photo={i.photo}
               />
             ))}
           </div>
         )}
 
         {searchedData && searchedData.totalPage > 1 && (
-          <article>
+          <div className="flex items-center justify-between mt-4">
             <button
               disabled={!isPrevPage}
               onClick={() => setPage((prev) => prev - 1)}
+              className="p-2 bg-blue-500 text-white rounded-xl disabled:opacity-50"
             >
               Prev
             </button>
@@ -141,10 +149,11 @@ const Search = () => {
             <button
               disabled={!isNextPage}
               onClick={() => setPage((prev) => prev + 1)}
+              className="p-2 bg-blue-500 text-white rounded-xl disabled:opacity-50"
             >
               Next
             </button>
-          </article>
+          </div>
         )}
       </main>
     </div>

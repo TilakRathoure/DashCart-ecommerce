@@ -7,7 +7,7 @@ export const errorMiddleware = (
   req: Request,
   res: Response,
   next: NextFunction
-):Response<any, Record<string, any>> => {
+) => {
   err.message ||= "Internal Server Error";
   err.statusCode ||= 500;
 

@@ -1,14 +1,13 @@
 import { onAuthStateChanged } from "firebase/auth";
-import { Suspense, lazy, useEffect } from "react";
-import { Toaster } from "react-hot-toast";
+import { Suspense, lazy, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
+import {Route, BrowserRouter as Router, Routes, useNavigate } from "react-router-dom";
 import Header from "./components/Header";
 import Loader from "./components/Loader";
 import ProtectedRoute from "./components/protected-route";
 import { auth } from "./firebase";
 import { getUser } from "./redux/api/userAPI";
-import { userExist, userNotExist } from "./redux/reducer/userReducer";
+import {userExist, userNotExist } from "./redux/reducer/userReducer";
 import { RootState } from "./redux/store";
 
 const Home = lazy(() => import("./pages/Home"));
@@ -16,7 +15,7 @@ const Search = lazy(() => import("./pages/Search"));
 const Cart = lazy(() => import("./pages/Cart"));
 const Shipping = lazy(() => import("./pages/Shipping"));
 const Login = lazy(() => import("./pages/Login"));
-const Orders = lazy(() => import("./pages/orders"));
+const Orders = lazy(() => import("./pages/order"));
 const OrderDetails = lazy(() => import("./pages/order-details"));
 const NotFound = lazy(() => import("./pages/not-found"));
 const Checkout = lazy(() => import("./pages/checkout"));
@@ -40,19 +39,26 @@ const TransactionManagement = lazy(
 );
 
 const App = () => {
-  const { user, loading } = useSelector(
+
+  const dispatch=useDispatch();
+
+  const [loading,setLoading]=useState<boolean>(true);
+
+  const { user} = useSelector(
     (state: RootState) => state.userReducer
   );
 
-  const dispatch = useDispatch();
-
   useEffect(() => {
     onAuthStateChanged(auth, async (user) => {
-      dispatch(loading(true));
       if (user) {
         const data = await getUser(user.uid);
         dispatch(userExist(data.user));
-      } else dispatch(userNotExist());
+        setLoading(false);
+      } else{
+        setLoading(false);
+      dispatch(userNotExist())
+
+      };
     });
   }, []);
 
@@ -96,19 +102,19 @@ const App = () => {
             }
           >
             <Route path="/admin/dashboard" element={<Dashboard />} />
-            <Route path="/admin/product" element={<Products />} />
-            <Route path="/admin/customer" element={<Customers />} />
-            <Route path="/admin/transaction" element={<Transaction />} />
+            <Route path="/admin/products" element={<Products />} />
+            <Route path="/admin/customers" element={<Customers />} />
+            <Route path="/admin/transactions" element={<Transaction />} />
             {/* Charts */}
-            <Route path="/admin/chart/bar" element={<Barcharts />} />
-            <Route path="/admin/chart/pie" element={<Piecharts />} />
-            <Route path="/admin/chart/line" element={<Linecharts />} />
+            <Route path="/admin/bar" element={<Barcharts />} />
+            <Route path="/admin/pie" element={<Piecharts />} />
+            <Route path="/admin/line" element={<Linecharts />} />
             {/* Apps */}
-            <Route path="/admin/app/coupon" element={<Coupon />} />
-            <Route path="/admin/app/stopwatch" element={<Stopwatch />} />
+            <Route path="/admin/coupon" element={<Coupon />} />
+            <Route path="/adminstopwatch" element={<Stopwatch />} />
 
             {/* Management */}
-            <Route path="/admin/product/new" element={<NewProduct />} />
+            <Route path="/admin/products/new" element={<NewProduct />} />
 
             <Route path="/admin/product/:id" element={<ProductManagement />} />
 
@@ -121,7 +127,6 @@ const App = () => {
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Suspense>
-      <Toaster position="bottom-center" />
     </Router>
   );
 };

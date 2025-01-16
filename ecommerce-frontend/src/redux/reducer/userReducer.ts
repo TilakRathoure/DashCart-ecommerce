@@ -4,18 +4,13 @@ import { User } from "../../types/types";
 
 const initialState: UserReducerInitialState = {
   user: null,
-  loading: true,
+  loading: false,
 };
 
 export const userReducer = createSlice({
   name: "userReducer",
   initialState,
   reducers: {
-
-    loader:(state,action:PayloadAction<boolean>)=>{
-      state.loading=action.payload;
-    },
-
     userExist: (state, action: PayloadAction<User>) => {
       state.loading = false;
       state.user = action.payload;
@@ -27,4 +22,4 @@ export const userReducer = createSlice({
   },
 });
 
-export const { userExist, userNotExist,loader } = userReducer.actions;
+export const { userExist, userNotExist } = userReducer.actions;
