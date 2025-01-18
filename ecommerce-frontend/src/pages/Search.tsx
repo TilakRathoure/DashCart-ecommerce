@@ -80,7 +80,7 @@ const Search = () => {
           <input
             type="range"
             min={100}
-            max={100000}
+            max={10000}
             value={maxPrice}
             onChange={(e) => setMaxPrice(Number(e.target.value))}
             className="w-full mt-2"
