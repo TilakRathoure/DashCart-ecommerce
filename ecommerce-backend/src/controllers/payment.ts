@@ -1,6 +1,6 @@
 import { stripe } from "../app.js";
 import { TryCatch } from "../middlewares/error.js";
-import { Coupon } from "../models/Coupons.js";
+import { Coupon } from "../models/coupons.js";
 import ErrorHandler from "../utils/utility-class.js";
 
 export const createPaymentIntent = TryCatch(async (req, res, next) => {
@@ -11,6 +11,7 @@ export const createPaymentIntent = TryCatch(async (req, res, next) => {
   const paymentIntent = await stripe.paymentIntents.create({
     amount: Number(amount) * 100,
     currency: "inr",
+    payment_method_types: ['card'],
   });
 
   return res.status(201).json({

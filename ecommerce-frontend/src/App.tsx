@@ -1,7 +1,7 @@
 import { onAuthStateChanged } from "firebase/auth";
 import { Suspense, lazy, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {Route, BrowserRouter as Router, Routes, useNavigate } from "react-router-dom";
+import {Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import Header from "./components/Header";
 import Loader from "./components/Loader";
 import ProtectedRoute from "./components/protected-route";
@@ -49,16 +49,21 @@ const App = () => {
   );
 
   useEffect(() => {
+
+    console.log("USE EFFECT WORKING");
+
     onAuthStateChanged(auth, async (user) => {
+      setLoading(true);
+      console.log("CHANGE AUTH WORKING")
       if (user) {
         const data = await getUser(user.uid);
         dispatch(userExist(data.user));
         setLoading(false);
       } else{
         setLoading(false);
-      dispatch(userNotExist())
+      dispatch(userNotExist())};
 
-      };
+
     });
   }, []);
 
@@ -111,15 +116,15 @@ const App = () => {
             <Route path="/admin/line" element={<Linecharts />} />
             {/* Apps */}
             <Route path="/admin/coupon" element={<Coupon />} />
-            <Route path="/adminstopwatch" element={<Stopwatch />} />
+            <Route path="/admin/stopwatch" element={<Stopwatch />} />
 
             {/* Management */}
             <Route path="/admin/products/new" element={<NewProduct />} />
 
-            <Route path="/admin/product/:id" element={<ProductManagement />} />
+            <Route path="/admin/products/:id" element={<ProductManagement />} />
 
             <Route
-              path="/admin/transaction/:id"
+              path="/admin/transactions/:id"
               element={<TransactionManagement />}
             />
           </Route>

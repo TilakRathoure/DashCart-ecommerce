@@ -1,6 +1,17 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+*{
+
+    font-family: 'Montserrat', sans-serif;
+
+}
+
 
 .backgco {
     @apply border border-gray-700 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900;

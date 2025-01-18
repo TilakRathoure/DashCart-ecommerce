@@ -9,7 +9,9 @@ import { useMyOrdersQuery } from "../redux/api/orderAPI";
 import { RootState } from "../redux/store";
 import { CustomError } from "../types/api-types";
 
-type DataType = {
+
+
+type DataType =  {
   _id: string;
   amount: number;
   quantity: number;
@@ -17,6 +19,7 @@ type DataType = {
   status: ReactElement;
   action: ReactElement;
 };
+
 
 const column: Column<DataType>[] = [
   {
@@ -78,7 +81,7 @@ const Orders = () => {
               {i.status}
             </span>
           ),
-          action: <Link to={`/admin/transaction/${i._id}`}>Manage</Link>,
+          action: <Link to={`/admin/transactions/${i._id}`}>Manage</Link>,
         }))
       );
   }, [data]);
@@ -91,7 +94,7 @@ const Orders = () => {
     rows.length > 6
   )();
   return (
-    <div className="container">
+    <div className="">
       <h1>My Orders</h1>
       {isLoading ? <Skeleton length={20} /> : Table}
     </div>

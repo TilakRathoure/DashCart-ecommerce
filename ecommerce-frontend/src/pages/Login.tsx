@@ -1,4 +1,4 @@
-import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { GoogleAuthProvider, signInWithPopup, signOut } from "firebase/auth";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { FcGoogle } from "react-icons/fc";
@@ -32,17 +32,22 @@ const Login = () => {
       });
 
       if ("data" in res) {
+        console.log("data in worked");
         toast.success(res.data!.message);
         const data = await getUser(user.uid);
         dispatch(userExist(data?.user));
       } else {
+        if(user) await signOut(auth);
         const error = res.error as FetchBaseQueryError;
         const message = (error.data as MessageResponse).message;
         toast.error(message);
         dispatch(userNotExist());
+        console.log("everything has worked");
       }
     } catch (err) {
+      console.log("try catch error worked")
       toast.error(`Sign up failed ${err}`);
+
     }
   };
 

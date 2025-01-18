@@ -1,4 +1,5 @@
 import { ReactElement } from "react";
+import toast from "react-hot-toast";
 import { Navigate, Outlet } from "react-router-dom";
 
 interface Props {
@@ -18,7 +19,10 @@ const ProtectedRoute = ({
 }: Props) => {
   if (!isAuthenticated) return <Navigate to={redirect} />;
 
-  if (adminOnly && !admin) return <Navigate to={redirect} />;
+  if (adminOnly && !admin){
+    toast.error("Dont have admin access");
+    return <Navigate to={redirect} />;
+  }
 
   return children ? children : <Outlet />;
 };

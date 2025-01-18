@@ -68,8 +68,8 @@ const Cart = () => {
   }, [cartItems]);
 
   return (
-    <div className="flex gap-16 p-8 h-[calc(100vh-4rem)]">
-      <main className="w-7/10 overflow-y-auto">
+    <div className="flex gap-2 justify-between p-8 h-[calc(100vh-4rem)]">
+      <main className="w-4/5 flex flex-col gap-3 bg-gray-100 p-4 overflow-y-auto">
         {cartItems.length > 0 ? (
           cartItems.map((i, idx) => (
             <CartItemCard
@@ -85,7 +85,7 @@ const Cart = () => {
         )}
       </main>
 
-      <aside className="w-3/10 p-16 flex flex-col gap-6">
+      <aside className="w-2/5 flex flex-col gap-6 p-4">
         <p className="text-lg">Subtotal: ₹{subtotal}</p>
         <p className="text-lg">Shipping Charges: ₹{shippingCharges}</p>
         <p className="text-lg">Tax: ₹{tax}</p>

@@ -14,6 +14,7 @@ const NewProduct = () => {
   const [price, setPrice] = useState<number>(1000);
   const [stock, setStock] = useState<number>(1);
   const [photo, setPhoto] = useState<string>();
+  const [file1,setFile]=useState<File>();
 
   const [newProduct] = useNewProductMutation();
   const navigate = useNavigate();
@@ -28,6 +29,7 @@ const NewProduct = () => {
       reader.onloadend = () => {
         if (typeof reader.result === "string") {
           setPhoto(reader.result);
+          setFile(file);
         }
       };
     }
@@ -43,12 +45,12 @@ const NewProduct = () => {
     formData.set("name", name);
     formData.set("price", price.toString());
     formData.set("stock", stock.toString());
-    formData.set("photo", photo);
+    formData.set("photo", file1!);
     formData.set("category", category);
 
     const res = await newProduct({ id: user!._id!, formData });
 
-    responseToast(res, navigate, "/admin/product");
+    responseToast(res, navigate, "/admin/products");
   };
 
   return (

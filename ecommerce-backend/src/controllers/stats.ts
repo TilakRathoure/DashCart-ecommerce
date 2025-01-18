@@ -1,7 +1,7 @@
 import { myCache } from "../app.js";
 import { TryCatch } from "../middlewares/error.js";
 import { Order } from "../models/order.js";
-import { Product } from "../models/Products.js";
+import { Product } from "../models/products.js";
 import { User } from "../models/user.js";
 import {
   calculatePercentage,

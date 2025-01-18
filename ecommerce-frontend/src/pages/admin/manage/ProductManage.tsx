@@ -72,7 +72,7 @@ const Productmanagement = () => {
       productId: data!.product._id!,
     });
 
-    responseToast(res, navigate, "/admin/product");
+    responseToast(res, navigate, "/admin/products");
   };
 
   const deleteHandler = async () => {
@@ -81,7 +81,7 @@ const Productmanagement = () => {
       productId: data!.product._id!,
     });
 
-    responseToast(res, navigate, "/admin/product");
+    responseToast(res, navigate, "/admin/products");
   };
 
   useEffect(() => {

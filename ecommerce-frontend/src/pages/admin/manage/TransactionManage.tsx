@@ -59,7 +59,7 @@ const TransactionManagement = () => {
       userId: user!._id!,
       orderId: data!.order._id!,
     });
-    responseToast(res, navigate, "/admin/transaction");
+    responseToast(res, navigate, "/admin/transactions");
   };
 
   const deleteHandler = async () => {
@@ -67,13 +67,13 @@ const TransactionManagement = () => {
       userId: user!._id!,
       orderId: data!.order._id!,
     });
-    responseToast(res, navigate, "/admin/transaction");
+    responseToast(res, navigate, "/admin/transactions");
   };
 
   if (isError) return <Navigate to={"/404"} />;
 
   return (
-    <div className="md:flex text-gray-100 h-screen bg-gray-100">
+    <div className="md:flex text-black h-screen bg-gray-100">
       <AdminSidebar />
       <main className="md:w-3/4 p-8 gap-8 flex flex-col md:flex-row">
         {isLoading ? (

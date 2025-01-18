@@ -26,14 +26,6 @@ const AdminSidebar = () => {
             ]
         },
         {
-            topic: "Charts",
-            items: [
-                { title: "Bar", icon: FaChartBar },
-                { title: "Pie", icon: FaChartBar },
-                { title: "Line", icon: FaChartBar }
-            ]
-        },
-        {
             topic: "Apps",
             items: [
                 { title: "Stopwatch", icon: FaStopwatch },
@@ -45,9 +37,9 @@ const AdminSidebar = () => {
     return (
         <>
 
-            <div className=' z-30 fixed top-5 left-4 cursor-pointer shadow-2xl shadow-black md:hidden'>
+            <div className=' z-30 fixed top-3 left-4 cursor-pointer shadow-2xl shadow-black md:hidden'>
                 <HiMenu
-                    className='text-4xl text-white'
+                    className='text-4xl text-black'
                     onClick={() => setMenuOpen(!menuOpen)}
                 />
             </div>

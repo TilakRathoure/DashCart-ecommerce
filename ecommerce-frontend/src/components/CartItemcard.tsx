@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import { FaTrash } from "react-icons/fa";
 import { server } from "../redux/store";
 import { CartItem } from "../types/types";
@@ -19,22 +18,28 @@ const CartItems = ({
   const { photo, productId, name, price, quantity } = cartItem;
 
   return (
-    <div className="cart-item">
-      <img src={`${server}/${photo}`} alt={name} />
+    <div className="w-full flex text-sm md:text-base justify-between md:justify-around items-center gap-5">
+      <div className="w-2/3">
+        <div className="flex justify-center w-full">
+        <img className="max-h-[150px]" src={`${server}/${photo}`} alt={name} />
+        </div>
       <article>
-        <Link to={`/product/${productId}`}>{name}</Link>
+        <p className="">{name}</p>
         <span>₹{price}</span>
       </article>
-
-      <div>
-        <button onClick={() => decrementHandler(cartItem)}>-</button>
-        <p>{quantity}</p>
-        <button onClick={() => incrementHandler(cartItem)}>+</button>
       </div>
 
-      <button onClick={() => removeHandler(productId)}>
-        <FaTrash />
-      </button>
+      <div className="relative gap-2 w-1/3">
+        <div className=" flex justify-between max-w-[150px] bg-white px-3 rounded-lg gap-5">
+          <button onClick={() => decrementHandler(cartItem)}>-</button>
+          <p className="text-center border-2 border-white">{quantity}</p>
+          <button onClick={() => incrementHandler(cartItem)}>+</button>
+        </div>
+
+        <button className=" -top-5 lg:-right[6px] lg:top-[5px] right-0 absolute" onClick={() => removeHandler(productId)}>
+          <FaTrash />
+        </button>
+      </div>
     </div>
   );
 };

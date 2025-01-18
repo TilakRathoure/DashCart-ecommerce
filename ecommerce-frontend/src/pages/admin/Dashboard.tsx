@@ -13,6 +13,7 @@ import {RootState} from "../../redux/store"
 import { getLastMonths } from "../../utils/features";
 import toast from "react-hot-toast";
 import userImg from "../../assets/admin/user.png"
+import { useEffect } from "react";
 
 const { last6Months: months } = getLastMonths();
 
@@ -30,6 +31,12 @@ const Dashboard = () => {
   const stats = data?.stats || { changePercent: {}, count: {}, chart: {}, userRatio: {}, categoryCount: [], latestTransaction: [],order:{} ,product:{},user:{}};
 
   if (isError) toast.error("error");
+
+  useEffect(()=>{
+
+    console.log(stats.latestTransaction)
+
+    },[data])
 
   return (
     <div className="flex h-screen text-gray-100 bg-opacity-50">
@@ -173,18 +180,18 @@ const WidgetItem = ({ heading, color, graph, price }: dash) => (
     <div className="flex flex-col ">
       <h1>{heading}</h1>
       <h1 className="text-2xl font-bold">
-        {heading === "Revenue" ? "$" : ""}
+        {heading === "Revenue" ? "₹" : ""}
         {price}
       </h1>
       {graph > 0 ? (
         <p className="flex items-center gap-1">
           <HiTrendingUp className="text-green-500" />
-          <span className="text-green-500">+{graph}</span>
+          <span className="text-green-500">+{graph}%</span>
         </p>
       ) : (
         <p className="flex items-center gap-1">
           <HiTrendingDown className="text-red-500" />
-          <span className="text-red-500">{graph}</span>
+          <span className="text-red-500">{graph}%</span>
         </p>
       )}
     </div>
