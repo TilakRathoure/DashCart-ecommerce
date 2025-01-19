@@ -23,12 +23,13 @@ interface dash {
   graph: number;
   color: string;
 }
+
 const Dashboard = () => {
   const { user } = useSelector((state: RootState) => state.userReducer);
 
   const { isLoading, data, isError } = useStatsQuery(user!._id!);
 
-  const stats = data?.stats || { changePercent: {}, count: {}, chart: {}, userRatio: {}, categoryCount: [], latestTransaction: [],order:{} ,product:{},user:{}};
+  const stats = data?.stats!;
 
   if (isError) toast.error("error");
 

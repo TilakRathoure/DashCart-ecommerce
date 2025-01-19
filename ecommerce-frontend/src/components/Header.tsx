@@ -12,13 +12,14 @@ import { signOut } from "firebase/auth";
 import { auth } from "../firebase";
 import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
+import { RootState } from "../redux/store";
 
 interface PropsType {
   user: User | null;
 }
 
 const Header = ({ user }: PropsType) => {
-  const { cartItems } = useSelector((state) => state.cartReducer);
+  const { cartItems } = useSelector((state:RootState) => state.cartReducer);
 
   const adminpage = location.pathname.includes("admin");
 
