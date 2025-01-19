@@ -23,6 +23,12 @@ export const newUser = TryCatch(
     if (!_id || !name || !email || !photo || !gender || !dob)
       return next(new ErrorHandler("Please add all fields", 400));
 
+    const dobdate=new Date(dob);
+    const today=new Date();
+
+    if(dobdate>today)
+      return next(new ErrorHandler("Date of birth cannot be in the future",400));
+
     user = await User.create({
       name,
       email,

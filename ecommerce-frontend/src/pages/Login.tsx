@@ -8,15 +8,17 @@ import { FetchBaseQueryError } from "@reduxjs/toolkit/query/react";
 import { MessageResponse } from "../types/api-types";
 import { userExist, userNotExist } from "../redux/reducer/userReducer";
 import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
+  const navigate=useNavigate();
   const dispatch = useDispatch();
   const [gender, setGender] = useState("");
   const [date, setDate] = useState("");
 
   const [login] = useLoginMutation();
 
-  const loginHandler = async () => {
+  const LoginHandler = async () => {
     try {
       const provider = new GoogleAuthProvider();
       const { user } = await signInWithPopup(auth, provider);
@@ -36,6 +38,7 @@ const Login = () => {
         toast.success(res.data!.message);
         const data = await getUser(user.uid);
         dispatch(userExist(data?.user));
+        navigate("/");
       } else {
         if(user) await signOut(auth);
         const error = res.error as FetchBaseQueryError;
@@ -79,10 +82,9 @@ const Login = () => {
           />
         </div>
 
-        <div className="w-full text-center">
-          <p className="mb-6 text-sm">Already Signed In Once</p>
+        <div className="w-full text-center mt-3">
           <button
-            onClick={loginHandler}
+            onClick={LoginHandler}
             className="w-3/4 mx-auto h-12 flex items-center justify-center bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors border border-blue-600"
           >
             <FcGoogle className="bg-white rounded-full p-1 w-10 h-10 mr-2" />

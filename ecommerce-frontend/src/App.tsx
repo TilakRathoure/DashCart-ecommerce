@@ -1,13 +1,13 @@
 import { onAuthStateChanged } from "firebase/auth";
 import { Suspense, lazy, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {Route, BrowserRouter as Router, Routes } from "react-router-dom";
+import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import Header from "./components/Header";
 import Loader from "./components/Loader";
 import ProtectedRoute from "./components/protected-route";
 import { auth } from "./firebase";
 import { getUser } from "./redux/api/userAPI";
-import {userExist, userNotExist } from "./redux/reducer/userReducer";
+import { userExist, userNotExist } from "./redux/reducer/userReducer";
 import { RootState } from "./redux/store";
 
 const Home = lazy(() => import("./pages/Home"));
@@ -39,31 +39,33 @@ const TransactionManagement = lazy(
 );
 
 const App = () => {
+  const dispatch = useDispatch();
 
-  const dispatch=useDispatch();
+  const [loading, setLoading] = useState<boolean>(true);
 
-  const [loading,setLoading]=useState<boolean>(true);
-
-  const { user} = useSelector(
-    (state: RootState) => state.userReducer
-  );
+  const { user } = useSelector((state: RootState) => state.userReducer);
 
   useEffect(() => {
-
     console.log("USE EFFECT WORKING");
 
     onAuthStateChanged(auth, async (user) => {
       setLoading(true);
-      console.log("CHANGE AUTH WORKING")
-      if (user) {
-        const data = await getUser(user.uid);
-        dispatch(userExist(data.user));
-        setLoading(false);
-      } else{
-        setLoading(false);
-      dispatch(userNotExist())};
+      console.log("CHANGE AUTH WORKING");
 
+      try{
 
+        if (user) {
+          const data = await getUser(user.uid);
+          dispatch(userExist(data.user));
+        } else {
+          dispatch(userNotExist());
+        }
+
+      }catch(error){
+        console.log(error);
+      }finally{
+        setLoading(false);
+      }
     });
   }, []);
 
