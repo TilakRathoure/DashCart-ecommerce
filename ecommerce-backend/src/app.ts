@@ -13,9 +13,16 @@ import productRoute from "./routes/products.js";
 import orderRoute from "./routes/orders.js";
 import paymentRoute from "./routes/payments.js";
 import dashboardRoute from "./routes/stats.js";
+import { v2 as cloudinary } from 'cloudinary';
 
 config({
   path: "./.env",
+});
+
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
 const port = process.env.PORT || 4000;

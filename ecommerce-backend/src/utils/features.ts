@@ -2,6 +2,44 @@ import mongoose, { Document } from "mongoose";
 import { myCache } from "../app.js";
 import { Product } from "../models/products.js";
 import { InvalidateCacheProps, OrderItemType } from "../types/types.js";
+import {v2 as cloudinary, UploadApiResponse } from "cloudinary";
+
+
+const getBase64 = (file: Express.Multer.File) =>
+  `data:${file.mimetype};base64,${file.buffer.toString("base64")}`;
+
+
+export const uploadToCloudinary = async (file: Express.Multer.File) => {
+  return new Promise<string>((resolve, reject) => {
+    cloudinary.uploader.upload(getBase64(file), (error, result) => {
+      if (error) return reject(error);
+      resolve(result?.public_id as string);
+    });
+  });
+};
+
+
+export const deleteFromCloudinary = async (publicId: string) => {
+  return new Promise<void>((resolve, reject) => {
+    cloudinary.uploader.destroy(publicId, (error) => {
+      if (error) return reject(error);
+      resolve();
+    });
+  });
+};
+
+export const generatePublicUrl = (publicId: string): string => {
+  const cloudName = process.env.CLOUDINARY_NAME;
+  return `https://res.cloudinary.com/${cloudName}/image/upload/${publicId}`;
+};
+
+export const extractPublicId = (url: string): string => {
+  // Match the public_id portion of the URL
+  const regex = /\/image\/upload\/([^\.]+)/;
+  const match = url.match(regex);
+  return match ? match[1] : '';
+};
+
 
 export const connectDB = (uri: string) => {
   mongoose
