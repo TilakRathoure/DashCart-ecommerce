@@ -1,5 +1,4 @@
 import { FaTrash } from "react-icons/fa";
-import { server } from "../redux/store";
 import { CartItem } from "../types/types";
 
 type CartItemProps = {
@@ -21,7 +20,7 @@ const CartItems = ({
     <div className="w-full flex text-sm md:text-base justify-between md:justify-around items-center gap-5">
       <div className="w-2/3">
         <div className="flex justify-center w-full">
-        <img className="max-h-[150px]" src={`${server}/${photo}`} alt={name} />
+        <img className="max-h-[150px]" src={photo} alt={name} />
         </div>
       <article>
         <p className="">{name}</p>
