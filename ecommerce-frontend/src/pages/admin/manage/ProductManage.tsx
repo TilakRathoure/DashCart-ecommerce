@@ -9,7 +9,7 @@ import {
   useProductDetailsQuery,
   useUpdateProductMutation,
 } from "../../../redux/api/productAPI";
-import { RootState, server } from "../../../redux/store";
+import { RootState} from "../../../redux/store";
 import { responseToast } from "../../../utils/features";
 
 const Productmanagement = () => {
@@ -108,7 +108,7 @@ const Productmanagement = () => {
             <section className="w-1/3 h-[85vh] p-6 bg-gray-800 border border-gray-700 rounded-lg shadow-lg flex flex-col items-center gap-4">
               <strong className="text-sm">ID - {data?.product._id}</strong>
               <img
-                src={`${server}/${photo}`}
+                src={photo}
                 alt="Product"
                 className="w-full h-48 object-cover rounded-lg"
               />

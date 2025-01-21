@@ -17,7 +17,7 @@ const Home = () => {
   const { data, isLoading, isError } = useLatestProductsQuery("");
 
   const dispatch = useDispatch();
-
+  
   const addToCartHandler = (cartItem: CartItem) => {
 
     const index=CART.findIndex((i)=>i.productId===cartItem.productId);
@@ -53,6 +53,7 @@ const Home = () => {
             <Skeleton width="80vw" />
           ) : (
             data?.products.map((i) => (
+
               <ProductCard
                 key={i._id}
                 productId={i._id}

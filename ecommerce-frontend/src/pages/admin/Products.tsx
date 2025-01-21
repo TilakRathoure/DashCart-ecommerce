@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import AdminSidebar from "../../components/admin/AdminSidebar";
 import TableHOC from "../../components/admin/TableHOC";
 import { Column } from "react-table";
-import { RootState, server } from "../../redux/store";
+import { RootState} from "../../redux/store";
 import { useSelector } from "react-redux";
 import { useAllProductsQuery } from "../../redux/api/productAPI";
 import { CustomError } from "../../types/api-types";
@@ -43,7 +43,7 @@ const Products = () => {
     if (data)
       setRows(
         data.products.map((i) => ({
-          photo: <img src={`${server}/${i.photo}`} />,
+          photo: <img src={i.photo} />,
           name: i.name,
           price: i.price,
           stock: i.stock,

@@ -31,6 +31,7 @@ const Linecharts = lazy(() => import("./pages/admin/charts/Line"));
 const Coupon = lazy(() => import("./pages/admin/applications/Coupon"));
 const Stopwatch = lazy(() => import("./pages/admin/applications/Stopwatch"));
 const NewProduct = lazy(() => import("./pages/admin/manage/NewProduct"));
+const Productdetails=lazy(()=>import("./pages/Productdetails"));
 const ProductManagement = lazy(
   () => import("./pages/admin/manage/ProductManage")
 );
@@ -80,6 +81,7 @@ const App = () => {
           <Route path="/" element={<Home />} />
           <Route path="/search" element={<Search />} />
           <Route path="/cart" element={<Cart />} />
+          <Route path="/:id" element={<Productdetails/>}/>
           {/* Not logged In Route */}
           <Route
             path="/login"

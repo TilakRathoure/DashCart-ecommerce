@@ -83,9 +83,9 @@ const Header = ({ user }: PropsType) => {
             </button>
             <dialog
               open={isOpen}
-              className="border border-gray-300 rounded p-2 w-28 absolute top-10 right-0"
+              className="pt-5 border border-gray-300 rounded p-2 h-[200px] w-[150px] absolute top-10 right-0"
             >
-              <div className="flex flex-col items-center space-y-1">
+              <div className="text-xl flex flex-col items-center space-y-1">
                 {user.role === "admin" && (
                   <Link
                     onClick={() => setIsOpen(false)}
