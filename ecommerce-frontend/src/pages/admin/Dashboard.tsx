@@ -6,10 +6,8 @@ import AdminSidebar from "../../components/admin/AdminSidebar";
 import { BarChart, DoughnutChart } from "../../components/admin/Chart";
 import DashboardTable from "../../components/admin/DashboardTable";
 // import { Navigate } from "react-router-dom";
-import { useSelector } from "react-redux";
 import { useStatsQuery } from "../../redux/api/dashboardAPIs";
 import { Skeleton } from "../../components/Loader";
-import { RootState } from "../../redux/store";
 import { getLastMonths } from "../../utils/features";
 import toast from "react-hot-toast";
 import userImg from "../../assets/admin/user.png"
@@ -25,8 +23,7 @@ interface Dash {
 }
 
 const Dashboard = () => {
-  const { user } = useSelector((state: RootState) => state.userReducer);
-  const { isLoading, data, isError } = useStatsQuery(user!._id!);
+  const { isLoading, data, isError } = useStatsQuery("");
 
   const stats: Stats = data?.stats!;
 
@@ -48,7 +45,7 @@ const Dashboard = () => {
           <FaRegBell />
           <img
             className="w-7 rounded-full"
-            src={user?.photo || userImg}
+            src={userImg}
             alt="User Profile"
           />
         </header>

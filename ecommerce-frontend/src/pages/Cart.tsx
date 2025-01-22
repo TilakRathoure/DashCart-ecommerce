@@ -69,7 +69,7 @@ const Cart = () => {
 
   return (
     <div className="flex gap-2 justify-between p-8 h-[calc(100vh-4rem)]">
-      <main className="w-4/5 flex flex-col gap-3 bg-gray-100 p-4 overflow-y-auto">
+      <main className="w-[70%] sm:w-[60%] flex flex-col gap-3 bg-gray-100 p-4 overflow-y-auto">
         {cartItems.length > 0 ? (
           cartItems.map((i, idx) => (
             <CartItemCard
@@ -85,11 +85,11 @@ const Cart = () => {
         )}
       </main>
 
-      <aside className="w-2/5 flex flex-col gap-6 p-4">
-        <p className="text-lg">Subtotal: ₹{subtotal}</p>
-        <p className="text-lg">Shipping Charges: ₹{shippingCharges}</p>
-        <p className="text-lg">Tax: ₹{tax}</p>
-        <p className="text-lg">
+      <aside className=" w-[30%] sm:w-[40%] text-base md:text-lg flex flex-col gap-6 sm:p-4">
+        <p className="">Subtotal: ₹{subtotal}</p>
+        <p className="">Shipping Charges: ₹{shippingCharges}</p>
+        <p className="">Tax: ₹{tax}</p>
+        <p className="">
           Discount: <em className="text-red-500"> - ₹{discount}</em>
         </p>
         <p className="text-lg font-bold">
@@ -118,7 +118,7 @@ const Cart = () => {
         {cartItems.length > 0 && (
           <Link
             to="/shipping"
-            className="bg-blue-500 text-white p-4 text-center rounded-md uppercase tracking-wide hover:opacity-80"
+            className="bg-blue-500 text-white py-4 px-1 sm:px-4 rounded-md uppercase tracking-wide hover:opacity-80"
           >
             Checkout
           </Link>

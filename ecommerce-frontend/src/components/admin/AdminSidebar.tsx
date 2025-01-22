@@ -47,7 +47,7 @@ const AdminSidebar = () => {
             {/* Sidebar */}
             <aside className={`md:w-1/4 h-screen z-40 p-4 pl-6 text-white bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-gray-10 border-r-2 border-r-gray-700 fixed top-0 transition-all duration-300 ${menuOpen ? 'left-0' : 'left-[-300px]'} md:static`}>
 
-                <h1 className='text-2xl mb-2 font-bold relative'><div className='md:hidden text-lg border-white border-2 px-2 top-[-7px] cursor-pointer absolute right-[2px]' onClick={()=> setMenuOpen(false)}>X</div>ShopHere.</h1>
+                <h1 className='text-2xl mb-2 font-bold relative'><div className='md:hidden text-lg border-white border-2 px-2 top-[-7px] cursor-pointer absolute right-[2px]' onClick={()=> setMenuOpen(false)}>X</div> <Link to="/">ShopHere.</Link></h1>
 
                 <div className='p-3'>
                     {topics.map((e, index) => (

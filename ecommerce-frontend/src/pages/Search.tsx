@@ -59,7 +59,7 @@ const Search = () => {
   return (
     <div className="flex space-x-8 min-h-[calc(100vh-6.5vh)]">
       {/* Sidebar (Filters) */}
-      <aside className="fixed bg-white w-[25vw] h-[100vh] p-4 left-0 top-[63px]">
+      <aside className="fixed bg-white w-[35vw] sm:w-[25vw] h-[100vh] p-4 left-0 top-[63px]">
         <h2 className="text-2xl">Filters</h2>
 
         <div>
@@ -76,7 +76,7 @@ const Search = () => {
         </div>
 
         <div>
-          <h4 className="text-lg">Max Price: ₹{maxPrice}</h4>
+          <h4 className="text-base sm:text-lg">Max Price: ₹{maxPrice}</h4>
           <input
             type="range"
             min={100}
@@ -88,13 +88,13 @@ const Search = () => {
         </div>
 
         <div>
-          <h4 className="text-lg">Category</h4>
+          <h4 className="text-base sm:text-lg">Category</h4>
           <select
             value={category}
             onChange={(e) => setCategory(e.target.value)}
             className="w-full p-2 border border-gray-400 rounded-xl mt-2"
           >
-            <option value="">ALL</option>
+            <option className="" value="">ALL</option>
             {!loadingCategories &&
               categoriesResponse?.categories.map((i) => (
                 <option key={i} value={i}>
@@ -105,10 +105,10 @@ const Search = () => {
         </div>
       </aside>
 
-      <div className="w-[25vw] "></div>
+      <div className="w-[35vw] sm:w-[25vw]"></div>
 
       {/* Main Content (Products) */}
-      <main className="flex flex-col  p-8 w-[75vw] bg-gray-100">
+      <main className="flex flex-col  p-8 w-[65vw] sm:w-[75vw] bg-gray-100">
         <h1 className="text-3xl mb-4">Products</h1>
         <input
           type="text"

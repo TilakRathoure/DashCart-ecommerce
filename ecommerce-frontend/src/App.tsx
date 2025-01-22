@@ -25,9 +25,9 @@ const Dashboard = lazy(() => import("./pages/admin/Dashboard"));
 const Products = lazy(() => import("./pages/admin/Products"));
 const Customers = lazy(() => import("./pages/admin/Customers"));
 const Transaction = lazy(() => import("./pages/admin/Transactions"));
-const Barcharts = lazy(() => import("./pages/admin/charts/Bar"));
-const Piecharts = lazy(() => import("./pages/admin/charts/Pie"));
-const Linecharts = lazy(() => import("./pages/admin/charts/Line"));
+// const Barcharts = lazy(() => import("./pages/admin/charts/Bar"));
+// const Piecharts = lazy(() => import("./pages/admin/charts/Pie"));
+// const Linecharts = lazy(() => import("./pages/admin/charts/Line"));
 const Coupon = lazy(() => import("./pages/admin/applications/Coupon"));
 const Stopwatch = lazy(() => import("./pages/admin/applications/Stopwatch"));
 const NewProduct = lazy(() => import("./pages/admin/manage/NewProduct"));
@@ -82,6 +82,10 @@ const App = () => {
           <Route path="/search" element={<Search />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/:id" element={<Productdetails/>}/>
+          <Route path="/admin/dashboard" element={<Dashboard />} />
+            <Route path="/admin/products" element={<Products />} />
+            <Route path="/admin/coupon" element={<Coupon />} />
+            <Route path="/admin/stopwatch" element={<Stopwatch />} />
           {/* Not logged In Route */}
           <Route
             path="/login"
@@ -93,7 +97,7 @@ const App = () => {
           />
           {/* Logged In User Routes */}
           <Route
-            element={<ProtectedRoute isAuthenticated={user ? true : false} />}
+            element={<ProtectedRoute isAuthenticated={user ? true : false} message="login first" redirect="/login"/>}
           >
             <Route path="/shipping" element={<Shipping />} />
             <Route path="/orders" element={<Orders />} />
@@ -110,17 +114,13 @@ const App = () => {
               />
             }
           >
-            <Route path="/admin/dashboard" element={<Dashboard />} />
-            <Route path="/admin/products" element={<Products />} />
+            {/* Charts */}
+            {/* <Route path="/admin/bar" element={<Barcharts />} /> */}
+            {/* <Route path="/admin/pie" element={<Piecharts />} /> */}
+            {/* <Route path="/admin/line" element={<Linecharts />} /> */}
+            {/* Apps */}
             <Route path="/admin/customers" element={<Customers />} />
             <Route path="/admin/transactions" element={<Transaction />} />
-            {/* Charts */}
-            <Route path="/admin/bar" element={<Barcharts />} />
-            <Route path="/admin/pie" element={<Piecharts />} />
-            <Route path="/admin/line" element={<Linecharts />} />
-            {/* Apps */}
-            <Route path="/admin/coupon" element={<Coupon />} />
-            <Route path="/admin/stopwatch" element={<Stopwatch />} />
 
             {/* Management */}
             <Route path="/admin/products/new" element={<NewProduct />} />

@@ -3,8 +3,6 @@ import { Link } from "react-router-dom";
 import AdminSidebar from "../../components/admin/AdminSidebar";
 import TableHOC from "../../components/admin/TableHOC";
 import { Column } from "react-table";
-import { RootState} from "../../redux/store";
-import { useSelector } from "react-redux";
 import { useAllProductsQuery } from "../../redux/api/productAPI";
 import { CustomError } from "../../types/api-types";
 import toast from "react-hot-toast";
@@ -31,9 +29,7 @@ const columns:Column<DataType>[]=[
 
 const Products = () => {
 
-  const { user } = useSelector((state: RootState) => state.userReducer);
-
-  const { isLoading, isError, error, data } = useAllProductsQuery(user!._id!);
+  const { isLoading, isError, error, data } = useAllProductsQuery("");
 
   const [rows, setRows] = useState<DataType[]>([]);
 
@@ -70,7 +66,7 @@ const Products = () => {
     <AdminSidebar/>
 
     {/* AddProduct */}
-    <Link to={"/admin/products/new"} className="z-10 fixed top-4 right-10 w-12 h-12 rounded-full bg-red-600 text-center text-white flex items-center justify-center border-1 border-black">+</Link>
+    <Link to={"/admin/products/new"} className="z-10 fixed top-[80px] right-10 w-12 h-12 rounded-full bg-red-600 text-center text-white flex items-center justify-center border-1 border-black">Add</Link>
 
     {/* Main */}
 

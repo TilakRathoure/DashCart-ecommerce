@@ -24,7 +24,7 @@ export const productAPI = createApi({
       providesTags: ["product"],
     }),
     allProducts: builder.query<AllProductsResponse, string>({
-      query: (id) => `admin-products?id=${id}`,
+      query: () => `admin-products`,
       providesTags: ["product"],
     }),
     categories: builder.query<CategoriesResponse, string>({

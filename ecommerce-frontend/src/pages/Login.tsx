@@ -39,6 +39,7 @@ const Login = () => {
         const data = await getUser(user.uid);
         dispatch(userExist(data?.user));
         navigate("/");
+        window.location.reload();
       } else {
         if(user) await signOut(auth);
         const error = res.error as FetchBaseQueryError;

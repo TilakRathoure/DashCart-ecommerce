@@ -13,7 +13,7 @@ export const dashboardApi = createApi({
   }),
   endpoints: (builder) => ({
     stats: builder.query<StatsResponse, string>({
-      query: (id) => `stats?id=${id}`,
+      query: () => `stats`,
       keepUnusedDataFor: 0,
     }),
     pie: builder.query<PieResponse, string>({

@@ -17,7 +17,7 @@ const CartItems = ({
   const { photo, productId, name, price, quantity } = cartItem;
 
   return (
-    <div className="w-full flex text-sm md:text-base justify-between md:justify-around items-center gap-5">
+    <div className="w-full flex flex-col sm:flex-row text-sm md:text-base justify-between md:justify-around items-center gap-5">
       <div className="w-2/3">
         <div className="flex justify-center w-full">
         <img className="max-h-[150px]" src={photo} alt={name} />
@@ -28,7 +28,7 @@ const CartItems = ({
       </article>
       </div>
 
-      <div className="relative gap-2 w-1/3">
+      <div className="relative sm:w-1/3">
         <div className=" flex justify-between max-w-[150px] bg-white px-3 rounded-lg gap-5">
           <button onClick={() => decrementHandler(cartItem)}>-</button>
           <p className="text-center border-2 border-white">{quantity}</p>

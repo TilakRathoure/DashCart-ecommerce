@@ -1,5 +1,8 @@
 import { FormEvent, useEffect, useState } from "react";
 import AdminSidebar from "../../../components/admin/AdminSidebar";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../redux/store";
+import toast from "react-hot-toast";
 
 
 const allLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
@@ -7,6 +10,9 @@ const allNumbers = "1234567890";
 const allSymbols = "!@#$%^&*()_+";
 
 const Coupon = () => {
+
+  const {user}=useSelector((state:RootState)=>state.userReducer);
+
   const [size, setSize] = useState<number>(8);
   const [prefix, setPrefix] = useState<string>("");
   const [includeNumbers, setIncludeNumbers] = useState<boolean>(false);
@@ -22,7 +28,10 @@ const Coupon = () => {
   };
 
   const submitHandler = (e: FormEvent<HTMLFormElement>) => {
+
     e.preventDefault();
+
+    if(!user || user._id!="admin") return toast.error("need admin access");
 
     if (!includeNumbers && !includeCharacters && !includeSymbols)
       return alert("Please Select One At Least");
