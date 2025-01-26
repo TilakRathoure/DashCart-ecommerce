@@ -2,7 +2,7 @@
 
 Shophere is a powerful ecommerce platform built with the MERN stack and TypeScript, featuring a dynamic admin dashboard for managing orders, transactions, and products. With secure Firebase authentication, Cloudinary image storage, and real-time data visualizations powered by Chart.js, Shophere offers a seamless and efficient experience for both admins and users.
 
-# React + TypeScript + MongoDb + ExpressJs + Nodejs
+# React + TypeScript + MongoDb + ExpressJs + Nodejs + Redux + Firebase (authentication) + Stripe
 
 # ScreenShots
 
