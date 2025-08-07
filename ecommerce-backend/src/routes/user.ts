@@ -13,7 +13,7 @@ const app = express.Router();
 app.post("/new", newUser);
 
 // Route - /api/v1/user/all
-app.get("/all", adminOnly, getAllUsers);
+app.get("/all",getAllUsers);
 
 // Route - /api/v1/user/dynamicID
 app.route("/:id").get(getUser).delete(adminOnly, deleteUser);

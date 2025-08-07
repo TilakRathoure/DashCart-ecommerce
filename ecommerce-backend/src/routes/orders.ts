@@ -18,7 +18,7 @@ app.post("/new", newOrder);
 app.get("/my", myOrders);
 
 // route - /api/v1/order/my
-app.get("/all", adminOnly, allOrders);
+app.get("/all", allOrders);
 
 app
   .route("/:id")

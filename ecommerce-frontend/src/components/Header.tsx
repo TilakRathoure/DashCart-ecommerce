@@ -13,6 +13,8 @@ import { auth } from "../firebase";
 import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
 import { RootState } from "../redux/store";
+import { useLocation } from "react-router-dom";
+
 
 interface PropsType {
   user: User | null;
@@ -20,6 +22,8 @@ interface PropsType {
 
 const Header = ({ user }: PropsType) => {
   const { cartItems } = useSelector((state:RootState) => state.cartReducer);
+
+  const location=useLocation();
 
   const adminpage = location.pathname.includes("admin");
 
@@ -43,7 +47,7 @@ const Header = ({ user }: PropsType) => {
             adminpage && "pl-12"
           } text-2xl font-semibold cursor-pointer`}
         >
-          ShopHere
+          DashCart
         </p>
       </Link>
 

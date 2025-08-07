@@ -5,8 +5,6 @@ import TableHOC from "../../components/admin/TableHOC";
 import { Column } from "react-table";
 import toast from "react-hot-toast";
 import { CustomError } from "../../types/api-types";
-import { useSelector } from "react-redux";
-import { RootState } from "../../redux/store";
 import { useAllOrdersQuery } from "../../redux/api/orderAPI";
 import { Skeleton } from "../../components/Loader";
 
@@ -46,9 +44,7 @@ const coloumn: Column<DataType>[]=[
 
 const Transactions = () => {
 
-  const { user } = useSelector((state: RootState) => state.userReducer);
-
-  const { isLoading, data, isError, error } = useAllOrdersQuery(user!._id!);
+  const { isLoading, data, isError, error } = useAllOrdersQuery("");
 
   const [rows, setRows] = useState<DataType[]>([]);
 

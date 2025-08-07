@@ -35,7 +35,6 @@ const Home = () => {
 
   return (
     <div className="">
-      {/* Background Image - No animation here */}
       <img
         src={backimg}
         className="absolute w-[100vw] object-cover object-top xl:object-left-top top-0 -z-40 h-[40vh]"
@@ -43,7 +42,6 @@ const Home = () => {
       />
 
       <div className="mt-[35vh]">
-        {/* Checkout Dashboard Section */}
         <Link to="/admin/dashboard">
           <motion.div
             className="relative mb-5 cursor-pointer"
@@ -53,12 +51,12 @@ const Home = () => {
           >
             <img
               src={dashboard}
-              className="z-2 object-cover object-top lg:object-center w-full h-[15vh]"
+              className="z-2 object-cover object-top lg:object-center w-full h-[30vh]"
               alt="Dashboard"
             />
             <div className="inset-0 z-4 absolute backdrop-blur-sm"></div>
             <p className="z-10 absolute font-bold inset-0 flex items-center justify-center text-white">
-              Checkout Dashboard
+              Checkout Admin Dashboard
             </p>
           </motion.div>
         </Link>

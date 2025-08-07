@@ -31,7 +31,7 @@ const Transaction = lazy(() => import("./pages/admin/Transactions"));
 const Coupon = lazy(() => import("./pages/admin/applications/Coupon"));
 const Stopwatch = lazy(() => import("./pages/admin/applications/Stopwatch"));
 const NewProduct = lazy(() => import("./pages/admin/manage/NewProduct"));
-const Productdetails=lazy(()=>import("./pages/Productdetails"));
+const Productdetails = lazy(() => import("./pages/Productdetails"));
 const ProductManagement = lazy(
   () => import("./pages/admin/manage/ProductManage")
 );
@@ -53,18 +53,16 @@ const App = () => {
       setLoading(true);
       console.log("CHANGE AUTH WORKING");
 
-      try{
-
+      try {
         if (user) {
           const data = await getUser(user.uid);
           dispatch(userExist(data.user));
         } else {
           dispatch(userNotExist());
         }
-
-      }catch(error){
+      } catch (error) {
         console.log(error);
-      }finally{
+      } finally {
         setLoading(false);
       }
     });
@@ -81,11 +79,13 @@ const App = () => {
           <Route path="/" element={<Home />} />
           <Route path="/search" element={<Search />} />
           <Route path="/cart" element={<Cart />} />
-          <Route path="/:id" element={<Productdetails/>}/>
+          <Route path="/:id" element={<Productdetails />} />
           <Route path="/admin/dashboard" element={<Dashboard />} />
-            <Route path="/admin/products" element={<Products />} />
-            <Route path="/admin/coupon" element={<Coupon />} />
-            <Route path="/admin/stopwatch" element={<Stopwatch />} />
+          <Route path="/admin/products" element={<Products />} />
+          <Route path="/admin/coupon" element={<Coupon />} />
+          <Route path="/admin/stopwatch" element={<Stopwatch />} />
+          <Route path="/admin/customers" element={<Customers />} />
+          <Route path="/admin/transactions" element={<Transaction />} />
           {/* Not logged In Route */}
           <Route
             path="/login"
@@ -97,7 +97,13 @@ const App = () => {
           />
           {/* Logged In User Routes */}
           <Route
-            element={<ProtectedRoute isAuthenticated={user ? true : false} message="login first" redirect="/login"/>}
+            element={
+              <ProtectedRoute
+                isAuthenticated={user ? true : false}
+                message="login first"
+                redirect="/login"
+              />
+            }
           >
             <Route path="/shipping" element={<Shipping />} />
             <Route path="/orders" element={<Orders />} />
@@ -119,8 +125,6 @@ const App = () => {
             {/* <Route path="/admin/pie" element={<Piecharts />} /> */}
             {/* <Route path="/admin/line" element={<Linecharts />} /> */}
             {/* Apps */}
-            <Route path="/admin/customers" element={<Customers />} />
-            <Route path="/admin/transactions" element={<Transaction />} />
 
             {/* Management */}
             <Route path="/admin/products/new" element={<NewProduct />} />

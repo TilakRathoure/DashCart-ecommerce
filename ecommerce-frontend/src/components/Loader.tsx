@@ -1,6 +1,6 @@
 const Loader = () => {
   return (
-    <section className="w-full h-[85vh] flex justify-center items-center">
+    <section className="w-full h-screen flex justify-center items-center bg-black">
       <div className="w-[10rem] h-[10rem] rounded-full border-t-[1rem] border-l-[1rem] border-r-[1rem] border-b-[1rem] border-t-gray-800 border-l-gray-800 border-r-white border-b-white animate-spin">
       </div>
     </section>

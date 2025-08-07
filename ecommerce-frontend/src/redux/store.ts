@@ -14,7 +14,7 @@ export const store = configureStore({
     [productAPI.reducerPath]: productAPI.reducer,
     [orderApi.reducerPath]: orderApi.reducer,
     [dashboardApi.reducerPath]: dashboardApi.reducer,
-    [userReducer.name]: userReducer.reducer, // Use explicit keys for non-API reducers
+    [userReducer.name]: userReducer.reducer,
     [cartReducer.name]: cartReducer.reducer,
   },
   middleware: (getDefaultMiddleware) =>
