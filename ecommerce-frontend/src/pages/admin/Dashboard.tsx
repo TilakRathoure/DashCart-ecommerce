@@ -51,7 +51,7 @@ const Dashboard = () => {
         </header>
 
         {isLoading ? (
-          <Skeleton length={20} />
+          <Skeleton width="100vw"  length={20} />
         ) : (
           <>
             <div className="flex lg:gap-4 flex-wrap justify-center gap-4">
