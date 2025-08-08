@@ -177,7 +177,7 @@ const CategoryItem = ({
 const WidgetItem = ({ heading, color, graph, price }: Dash) => (
   <div
     key={heading}
-    className="flex border-2 border-gray-700 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 lg:w-[16rem] md:w-[15rem] w-[11rem] sm:w-[13rem] h-[8rem] rounded-xl p-4 justify-around overflow-hidden"
+    className="flex border-2 border-gray-700 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 lg:w-[16rem] md:w-[15rem] w-[10rem] sm:w-[13rem] h-[8rem] rounded-xl p-4 justify-around overflow-hidden"
   >
     <div className="flex flex-col">
       <h1>{heading}</h1>
