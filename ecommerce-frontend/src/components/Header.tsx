@@ -15,15 +15,14 @@ import { useSelector } from "react-redux";
 import { RootState } from "../redux/store";
 import { useLocation } from "react-router-dom";
 
-
 interface PropsType {
   user: User | null;
 }
 
 const Header = ({ user }: PropsType) => {
-  const { cartItems } = useSelector((state:RootState) => state.cartReducer);
+  const { cartItems } = useSelector((state: RootState) => state.cartReducer);
 
-  const location=useLocation();
+  const location = useLocation();
 
   const adminpage = location.pathname.includes("admin");
 
@@ -45,7 +44,7 @@ const Header = ({ user }: PropsType) => {
         <p
           className={`${
             adminpage && "pl-12"
-          } text-2xl font-semibold cursor-pointer`}
+          } text-3xl font-semibold cursor-pointer`}
         >
           DashCart
         </p>

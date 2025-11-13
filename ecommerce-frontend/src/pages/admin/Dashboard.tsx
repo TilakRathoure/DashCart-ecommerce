@@ -10,7 +10,7 @@ import { useStatsQuery } from "../../redux/api/dashboardAPIs";
 import { Skeleton } from "../../components/Loader";
 import { getLastMonths } from "../../utils/features";
 import toast from "react-hot-toast";
-import userImg from "../../assets/admin/user.png"
+import userImg from "../../assets/admin/user.png";
 import { Stats } from "../../types/types";
 
 const { last6Months: months } = getLastMonths();
@@ -30,7 +30,7 @@ const Dashboard = () => {
   if (isError) toast.error("Error fetching dashboard stats.");
 
   return (
-    <div className="flex h-screen text-gray-100 bg-opacity-50">
+    <div className="flex h-[631px] text-gray-100 bg-opacity-50">
       <AdminSidebar />
 
       {/* Main */}
@@ -43,15 +43,11 @@ const Dashboard = () => {
             className="flex-grow border-none bg-transparent p-1 outline-none focus:border-none"
           />
           <FaRegBell />
-          <img
-            className="w-7 rounded-full"
-            src={userImg}
-            alt="User Profile"
-          />
+          <img className="w-7 rounded-full" src={userImg} alt="User Profile" />
         </header>
 
         {isLoading ? (
-          <Skeleton width="100vw"  length={20} />
+          <Skeleton width="100vw" length={20} />
         ) : (
           <>
             <div className="flex lg:gap-4 flex-wrap justify-center gap-4">
