@@ -20,22 +20,22 @@ const CartItems = ({
     <div className="w-full flex flex-col sm:flex-row text-sm md:text-base justify-between md:justify-around items-center gap-5">
       <div className="w-2/3">
         <div className="flex justify-center w-full">
-        <img className="max-h-[150px]" src={photo} alt={name} />
+          <img className="max-h-[150px]" src={photo} alt={name} />
         </div>
-      <article>
-        <p className="">{name}</p>
-        <span>₹{price}</span>
-      </article>
+        <article className="w-full text-center">
+          <p className="">{name}</p>
+          <span>₹{price}</span>
+        </article>
       </div>
 
-      <div className="relative sm:w-1/3">
+      <div className="flex gap-2 sm:w-1/3">
         <div className=" flex justify-between max-w-[150px] bg-white px-3 rounded-lg gap-5">
           <button onClick={() => decrementHandler(cartItem)}>-</button>
           <p className="text-center border-2 border-white">{quantity}</p>
           <button onClick={() => incrementHandler(cartItem)}>+</button>
         </div>
 
-        <button className=" -top-5 lg:-right[6px] lg:top-[5px] right-0 absolute" onClick={() => removeHandler(productId)}>
+        <button className="" onClick={() => removeHandler(productId)}>
           <FaTrash />
         </button>
       </div>
