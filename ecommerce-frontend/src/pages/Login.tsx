@@ -2,6 +2,7 @@ import { GoogleAuthProvider, signInWithPopup, signOut } from "firebase/auth";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { FcGoogle } from "react-icons/fc";
+import { Link } from "react-router-dom";
 import { auth } from "../firebase";
 import { getUser, useLoginMutation } from "../redux/api/userAPI";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query/react";
@@ -11,7 +12,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 const Login = () => {
-  const navigate=useNavigate();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const [gender, setGender] = useState("");
   const [date, setDate] = useState("");
@@ -41,7 +42,7 @@ const Login = () => {
         navigate("/");
         window.location.reload();
       } else {
-        if(user) await signOut(auth);
+        if (user) await signOut(auth);
         const error = res.error as FetchBaseQueryError;
         const message = (error.data as MessageResponse).message;
         toast.error(message);
@@ -49,23 +50,35 @@ const Login = () => {
         console.log("everything has worked");
       }
     } catch (err) {
-      console.log("try catch error worked")
+      console.log("try catch error worked");
       toast.error(`Sign up failed ${err}`);
-
     }
   };
 
   return (
-    <div className="h-[90vh] flex flex-col items-center justify-center">
-      <main className="w-full h-[80%] max-w-md p-8 shadow-lg flex flex-col items-center justify-center">
-        <h1 className="text-2xl font-bold mb-6">Login</h1>
+    <div className="relative flex min-h-[85vh] items-center justify-center overflow-hidden px-4 py-16">
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,_rgba(13,148,136,0.14),_transparent_55%),linear-gradient(180deg,_#eef1f4_0%,_#e4e9ef_100%)]" />
 
-        <div className="w-full flex flex-col gap-2 mb-4">
-          <label className="font-medium">Gender</label>
+      <main className="relative w-full max-w-md rounded-md border border-store-line bg-store-surface p-8 shadow-sm">
+        <Link
+          to="/"
+          className="font-display text-2xl font-bold tracking-tight text-store-text"
+        >
+          DashCart
+        </Link>
+        <h1 className="mt-6 font-display text-3xl font-bold text-store-text">
+          Welcome back
+        </h1>
+        <p className="mt-2 text-sm text-store-muted">
+          Sign in to shop, track orders, and pick up where you left off.
+        </p>
+
+        <div className="mt-8 flex w-full flex-col gap-2">
+          <label className="text-sm font-medium text-store-text">Gender</label>
           <select
             value={gender}
             onChange={(e) => setGender(e.target.value)}
-            className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-300"
+            className="store-input"
           >
             <option value="">Select Gender</option>
             <option value="male">Male</option>
@@ -73,25 +86,25 @@ const Login = () => {
           </select>
         </div>
 
-        <div className="w-full flex flex-col gap-2 mb-4">
-          <label className="font-medium">Date of Birth</label>
+        <div className="mt-4 flex w-full flex-col gap-2">
+          <label className="text-sm font-medium text-store-text">
+            Date of Birth
+          </label>
           <input
             type="date"
             value={date}
             onChange={(e) => setDate(e.target.value)}
-            className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-300"
+            className="store-input"
           />
         </div>
 
-        <div className="w-full text-center mt-3">
-          <button
-            onClick={LoginHandler}
-            className="w-3/4 mx-auto h-12 flex items-center justify-center bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors border border-blue-600"
-          >
-            <FcGoogle className="bg-white rounded-full p-1 w-10 h-10 mr-2" />
-            <span className="text-lg">Sign in with Google</span>
-          </button>
-        </div>
+        <button
+          onClick={LoginHandler}
+          className="store-btn mt-8 w-full !py-3 text-base"
+        >
+          <FcGoogle className="h-6 w-6 rounded bg-white p-0.5" />
+          <span>Sign in with Google</span>
+        </button>
       </main>
     </div>
   );

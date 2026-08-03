@@ -1,7 +1,6 @@
 import { FaTrash } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
-import AdminSidebar from "../../../components/admin/AdminSidebar";
 import { Skeleton } from "../../../components/Loader";
 import {
   useDeleteOrderMutation,
@@ -29,6 +28,12 @@ const defaultData: Order = {
   orderItems: [],
   user: { name: "", _id: "" },
   _id: "",
+};
+
+const statusClass = (status: string) => {
+  if (status === "Delivered") return "admin-status-purple";
+  if (status === "Shipped") return "admin-status-green";
+  return "admin-status-red";
 };
 
 const TransactionManagement = () => {
@@ -73,87 +78,90 @@ const TransactionManagement = () => {
   if (isError) return <Navigate to={"/404"} />;
 
   return (
-    <div className="md:flex text-black h-screen bg-gray-100">
-      <AdminSidebar />
-      <main className="md:w-3/4 p-8 gap-8 flex flex-col md:flex-row">
-        {isLoading ? (
-          <Skeleton />
-        ) : (
-          <>
-            <section className="w-full max-w-lg p-6 bg-white shadow-md rounded-lg">
-              <h2 className="text-2xl font-semibold mb-4">Order Items</h2>
-              {orderItems.map((i) => (
-                <ProductCard
-                  key={i._id}
-                  name={i.name}
-                  photo={i.photo}
-                  productId={i.productId}
-                  _id={i._id}
-                  quantity={i.quantity}
-                  price={i.price}
-                />
-              ))}
-            </section>
+    <div className="flex flex-col gap-8 text-admin-text md:flex-row">
+      {isLoading ? (
+        <Skeleton variant="dark" length={12} />
+      ) : (
+        <>
+          <section className="admin-card w-full max-w-lg p-6">
+            <h2 className="mb-4 text-2xl font-semibold tracking-wide">
+              Order Items
+            </h2>
+            {orderItems.map((i) => (
+              <ProductCard
+                key={i._id}
+                name={i.name}
+                photo={i.photo}
+                productId={i.productId}
+                _id={i._id}
+                quantity={i.quantity}
+                price={i.price}
+              />
+            ))}
+          </section>
 
-            <article className="w-full max-w-md p-6 bg-white shadow-md rounded-lg">
-              <button
-                className="text-red-600 hover:text-red-800"
-                onClick={deleteHandler}
-              >
-                <FaTrash />
-              </button>
-              <h1 className="text-xl font-bold text-center mb-4">Order Info</h1>
+          <article className="admin-card relative w-full max-w-md p-6">
+            <button
+              type="button"
+              className="absolute right-4 top-4 rounded-md p-2 text-red-400 transition hover:bg-red-500/15 hover:text-red-300"
+              onClick={deleteHandler}
+              aria-label="Delete order"
+            >
+              <FaTrash />
+            </button>
+            <h1 className="mb-4 text-center text-xl font-bold uppercase tracking-wide">
+              Order Info
+            </h1>
 
-              <h5 className="mt-4 text-lg font-bold">User Info</h5>
-              <p>Name: {name}</p>
-              <p>
-                Address: {`${address}, ${city}, ${state}, ${country} ${pinCode}`}
-              </p>
+            <h5 className="mt-4 text-sm font-semibold uppercase tracking-wider text-admin-muted">
+              User Info
+            </h5>
+            <p className="mt-1 text-sm">Name: {name}</p>
+            <p className="text-sm text-admin-muted">
+              Address: {`${address}, ${city}, ${state}, ${country} ${pinCode}`}
+            </p>
 
-              <h5 className="mt-4 text-lg font-bold">Amount Info</h5>
+            <h5 className="mt-5 text-sm font-semibold uppercase tracking-wider text-admin-muted">
+              Amount Info
+            </h5>
+            <div className="mt-1 space-y-1 text-sm">
               <p>Subtotal: {subtotal}</p>
               <p>Shipping Charges: {shippingCharges}</p>
               <p>Tax: {tax}</p>
               <p>Discount: {discount}</p>
-              <p>Total: {total}</p>
+              <p className="font-medium text-admin-text">Total: {total}</p>
+            </div>
 
-              <h5 className="mt-4 text-lg font-bold">Status Info</h5>
-              <p>
-                Status: {
-                  <span
-                    className={
-                      status === "Delivered"
-                        ? "text-purple-600"
-                        : status === "Shipped"
-                        ? "text-green-600"
-                        : "text-red-600"
-                    }
-                  >
-                    {status}
-                  </span>
-                }
-              </p>
-              <button
-                onClick={updateHandler}
-                className="mt-4 bg-blue-600 text-white w-full rounded-md text-lg hover:opacity-80"
-              >
-                Process Status
-              </button>
-            </article>
-          </>
-        )}
-      </main>
+            <h5 className="mt-5 text-sm font-semibold uppercase tracking-wider text-admin-muted">
+              Status Info
+            </h5>
+            <p className="mt-2 text-sm">
+              Status: <span className={statusClass(status)}>{status}</span>
+            </p>
+            <button
+              type="button"
+              onClick={updateHandler}
+              className="admin-btn mt-5 w-full py-3 text-base"
+            >
+              Process Status
+            </button>
+          </article>
+        </>
+      )}
     </div>
   );
 };
 
 const ProductCard = ({ name, photo, price, quantity, productId }: OrderItem) => (
-  <div className="transaction-product-card flex flex-col items-center gap-4 mb-4">
-    <img src={photo} alt={name} className="w-16 h-16 object-cover rounded-md" />
-    <Link to={`/product/${productId}`} className="text-blue-600">
+  <div className="mb-4 flex flex-col items-center gap-3 border-b border-admin-line pb-4 last:mb-0 last:border-0 last:pb-0">
+    <img src={photo} alt={name} className="h-16 w-16 rounded-md object-cover" />
+    <Link
+      to={`/${productId}`}
+      className="text-sm font-medium text-admin-accent transition hover:text-blue-400"
+    >
       {name}
     </Link>
-    <span>{`₹${price} x ${quantity} = ₹${price * quantity}`}</span>
+    <span className="text-sm text-admin-muted">{`₹${price} x ${quantity} = ₹${price * quantity}`}</span>
   </div>
 );
 

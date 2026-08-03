@@ -1,36 +1,112 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
-
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Syne:wght@400..800&display=swap");
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-
-*{
-
-    font-family: 'Montserrat', sans-serif;
-
+:root {
+  --bg: #eef1f4;
+  --surface: #ffffff;
+  --text: #111827;
+  --muted: #5b6575;
+  --accent: #0d9488;
+  --line: rgba(17, 24, 39, 0.1);
+  --admin-bg: #0b0f17;
+  --admin-surface: #141a24;
+  --admin-elevated: #1c2433;
+  --admin-text: #f3f4f6;
+  --admin-muted: #9ca3af;
+  --admin-accent: #3b82f6;
+  --admin-line: rgba(255, 255, 255, 0.1);
 }
 
+* {
+  font-family: "DM Sans", sans-serif;
+}
 
-.backgco {
-    @apply border border-gray-700 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900;
+html,
+body,
+#root {
+  min-height: 100%;
+  background-color: var(--bg);
+  color: var(--text);
+}
+
+@layer components {
+  .store-shell {
+    @apply bg-store-bg text-store-text;
   }
 
-table img{
-    margin: auto;
-    width: 70px;
-    height: 70px;
-    min-width: 70px;
-    min-height: 70px;
-    object-fit: contain;
+  .store-btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-md bg-store-accent px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-teal-700;
+  }
+
+  .store-btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 rounded-md border border-store-line bg-white/70 px-5 py-2.5 text-sm font-medium text-store-text transition-colors hover:border-store-accent hover:text-store-accent;
+  }
+
+  .store-input {
+    @apply w-full rounded-md border border-store-line bg-white px-3 py-2.5 text-store-text outline-none transition focus:border-store-accent focus:ring-1 focus:ring-store-accent;
+  }
+
+  .admin-shell {
+    @apply bg-admin-bg text-admin-text;
+  }
+
+  .admin-card {
+    @apply rounded-xl border border-admin-line bg-gradient-to-br from-admin-bg via-admin-surface to-admin-bg;
+  }
+
+  .admin-input {
+    @apply w-full rounded-md border border-admin-line bg-admin-elevated px-3 py-2.5 text-admin-text outline-none transition placeholder:text-admin-muted focus:border-admin-accent focus:ring-1 focus:ring-admin-accent;
+  }
+
+  .admin-btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-md bg-admin-accent px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-blue-600 disabled:cursor-not-allowed disabled:opacity-50;
+  }
+
+  .admin-btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 rounded-md border border-admin-line bg-admin-elevated/60 px-5 py-2.5 text-sm font-medium text-admin-text transition-colors hover:border-admin-accent hover:text-admin-accent;
+  }
+
+  .admin-btn-danger {
+    @apply inline-flex items-center justify-center gap-2 rounded-md bg-red-600/90 px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-red-600;
+  }
+
+  .admin-table-link {
+    @apply inline-flex items-center justify-center rounded-md bg-admin-accent/15 px-3 py-1.5 text-sm font-medium text-admin-accent transition-colors hover:bg-admin-accent/25;
+  }
+
+  .admin-status-red {
+    @apply inline-flex rounded-md bg-red-500/15 px-2.5 py-1 text-xs font-medium text-red-400;
+  }
+
+  .admin-status-green {
+    @apply inline-flex rounded-md bg-emerald-500/15 px-2.5 py-1 text-xs font-medium text-emerald-400;
+  }
+
+  .admin-status-purple {
+    @apply inline-flex rounded-md bg-violet-500/15 px-2.5 py-1 text-xs font-medium text-violet-400;
+  }
+
+  .admin-label {
+    @apply mb-1.5 block text-sm text-admin-muted;
+  }
 }
-table a{
 
-    background-color: rgb(25, 223, 223);
-    padding: 7px;
-    border-radius:30%;
-    color: rgb(3, 130, 104);
-
+.backgco {
+  @apply border border-admin-line bg-gradient-to-br from-admin-bg via-admin-surface to-admin-bg;
 }
 
+table img {
+  margin: auto;
+  width: 70px;
+  height: 70px;
+  min-width: 70px;
+  min-height: 70px;
+  object-fit: contain;
+}
+
+.admin-shell table a {
+  @apply inline-flex items-center justify-center rounded-md bg-admin-accent/15 px-3 py-1.5 text-sm font-medium text-admin-accent transition-colors hover:bg-admin-accent/25;
+}

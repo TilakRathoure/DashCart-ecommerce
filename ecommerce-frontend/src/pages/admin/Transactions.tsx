@@ -1,13 +1,11 @@
 import { ReactElement, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import AdminSidebar from "../../components/admin/AdminSidebar";
 import TableHOC from "../../components/admin/TableHOC";
 import { Column } from "react-table";
 import toast from "react-hot-toast";
 import { CustomError } from "../../types/api-types";
 import { useAllOrdersQuery } from "../../redux/api/orderAPI";
 import { Skeleton } from "../../components/Loader";
-
 
 interface DataType {
   user: string;
@@ -18,32 +16,40 @@ interface DataType {
   action: ReactElement;
 }
 
-const coloumn: Column<DataType>[]=[
-
+const coloumn: Column<DataType>[] = [
   {
-    Header:"User", accessor:"user"
+    Header: "User",
+    accessor: "user",
   },
   {
-    Header:"Amount", accessor:"amount"
+    Header: "Amount",
+    accessor: "amount",
   },
   {
-    Header:"Discount", accessor:"discount"
+    Header: "Discount",
+    accessor: "discount",
   },
   {
-    Header:"Quantity", accessor:"quantity"
+    Header: "Quantity",
+    accessor: "quantity",
   },
   {
-    Header:"Status", accessor:"status"
+    Header: "Status",
+    accessor: "status",
   },
   {
-    Header:"Action", accessor:"action"
+    Header: "Action",
+    accessor: "action",
   },
-
 ];
 
+const statusClass = (status: string) => {
+  if (status === "Processing") return "admin-status-red";
+  if (status === "Shipped") return "admin-status-green";
+  return "admin-status-purple";
+};
 
 const Transactions = () => {
-
   const { isLoading, data, isError, error } = useAllOrdersQuery("");
 
   const [rows, setRows] = useState<DataType[]>([]);
@@ -61,46 +67,24 @@ const Transactions = () => {
           amount: i.total,
           discount: i.discount,
           quantity: i.orderItems.length,
-          status: (
-            <span
-              className={
-                i.status === "Processing"
-                  ? "red"
-                  : i.status === "Shipped"
-                  ? "green"
-                  : "purple"
-              }
+          status: <span className={statusClass(i.status)}>{i.status}</span>,
+          action: (
+            <Link
+              className="admin-table-link"
+              to={`/admin/transactions/${i._id}`}
             >
-              {i.status}
-            </span>
+              Manage
+            </Link>
           ),
-          action: <Link to={`/admin/transactions/${i._id}`}>Manage</Link>,
         }))
       );
   }, [data]);
 
-  const Table= TableHOC(
-    coloumn,rows,
-    "transaction-table",
-    "Transaction",
-    true
-  )();
-
+  const Table = TableHOC(coloumn, rows, "transaction-table", "Transaction", true)();
 
   return (
-    <div className="flex justify-center h-screen backgco">
+    <div>{isLoading ? <Skeleton variant="dark" length={20} /> : Table}</div>
+  );
+};
 
-    <AdminSidebar/>
-
-    <div className="md:w-3/4 backgco border-none p-5">
-    {isLoading? <Skeleton length={20}/> : (
-
-Table
-    )}
-    </div>
-
-    </div>
-  )
-}
-
-export default Transactions
+export default Transactions;

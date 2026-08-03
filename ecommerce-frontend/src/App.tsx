@@ -2,14 +2,14 @@ import { onAuthStateChanged } from "firebase/auth";
 import { Suspense, lazy, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
-import Header from "./components/Header";
-import Loader from "./components/Loader";
+import Loader, { RouteLoader } from "./components/Loader";
 import ProtectedRoute from "./components/protected-route";
+import StoreChrome from "./components/StoreChrome";
+import AdminLayout from "./components/admin/AdminLayout";
 import { auth } from "./firebase";
 import { getUser } from "./redux/api/userAPI";
 import { userExist, userNotExist } from "./redux/reducer/userReducer";
 import { RootState } from "./redux/store";
-import Footer from "./components/Footer";
 
 const Home = lazy(() => import("./pages/Home"));
 const Search = lazy(() => import("./pages/Search"));
@@ -73,75 +73,73 @@ const App = () => {
     <Loader />
   ) : (
     <Router>
-      {/* Header */}
-      <Header user={user} />
-      <Suspense fallback={<Loader />}>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/search" element={<Search />} />
-          <Route path="/cart" element={<Cart />} />
-          <Route path="/:id" element={<Productdetails />} />
-          <Route path="/admin/dashboard" element={<Dashboard />} />
-          <Route path="/admin/products" element={<Products />} />
-          <Route path="/admin/coupon" element={<Coupon />} />
-          <Route path="/admin/stopwatch" element={<Stopwatch />} />
-          <Route path="/admin/customers" element={<Customers />} />
-          <Route path="/admin/transactions" element={<Transaction />} />
-          {/* Not logged In Route */}
-          <Route
-            path="/login"
-            element={
-              <ProtectedRoute isAuthenticated={user ? false : true}>
-                <Login />
-              </ProtectedRoute>
-            }
-          />
-          {/* Logged In User Routes */}
-          <Route
-            element={
-              <ProtectedRoute
-                isAuthenticated={user ? true : false}
-                message="login first"
-                redirect="/login"
-              />
-            }
-          >
-            <Route path="/shipping" element={<Shipping />} />
-            <Route path="/orders" element={<Orders />} />
-            <Route path="/order/:id" element={<OrderDetails />} />
-            <Route path="/pay" element={<Checkout />} />
-          </Route>
-          {/* Admin Routes */}
-          <Route
-            element={
-              <ProtectedRoute
-                isAuthenticated={true}
-                adminOnly={true}
-                admin={user?.role === "admin" ? true : false}
-              />
-            }
-          >
-            {/* Charts */}
-            {/* <Route path="/admin/bar" element={<Barcharts />} /> */}
-            {/* <Route path="/admin/pie" element={<Piecharts />} /> */}
-            {/* <Route path="/admin/line" element={<Linecharts />} /> */}
-            {/* Apps */}
-
-            {/* Management */}
-            <Route path="/admin/products/new" element={<NewProduct />} />
-
-            <Route path="/admin/products/:id" element={<ProductManagement />} />
-
+      <StoreChrome user={user}>
+        <Suspense fallback={<RouteLoader />}>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/search" element={<Search />} />
+            <Route path="/cart" element={<Cart />} />
+            <Route path="/:id" element={<Productdetails />} />
+            {/* Not logged In Route */}
             <Route
-              path="/admin/transactions/:id"
-              element={<TransactionManagement />}
+              path="/login"
+              element={
+                <ProtectedRoute isAuthenticated={user ? false : true}>
+                  <Login />
+                </ProtectedRoute>
+              }
             />
-          </Route>
+            {/* Logged In User Routes */}
+            <Route
+              element={
+                <ProtectedRoute
+                  isAuthenticated={user ? true : false}
+                  message="login first"
+                  redirect="/login"
+                />
+              }
+            >
+              <Route path="/shipping" element={<Shipping />} />
+              <Route path="/orders" element={<Orders />} />
+              <Route path="/order/:id" element={<OrderDetails />} />
+              <Route path="/pay" element={<Checkout />} />
+            </Route>
 
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </Suspense>
-      <Footer />
+            {/* Admin Routes */}
+            <Route path="/admin" element={<AdminLayout />}>
+              <Route path="dashboard" element={<Dashboard />} />
+              <Route path="products" element={<Products />} />
+              <Route path="coupon" element={<Coupon />} />
+              <Route path="stopwatch" element={<Stopwatch />} />
+              <Route path="customers" element={<Customers />} />
+              <Route path="transactions" element={<Transaction />} />
+              <Route
+                element={
+                  <ProtectedRoute
+                    isAuthenticated={true}
+                    adminOnly={true}
+                    admin={user?.role === "admin" ? true : false}
+                  />
+                }
+              >
+                {/* Charts */}
+                {/* <Route path="bar" element={<Barcharts />} /> */}
+                {/* <Route path="pie" element={<Piecharts />} /> */}
+                {/* <Route path="line" element={<Linecharts />} /> */}
+
+                <Route path="products/new" element={<NewProduct />} />
+                <Route path="products/:id" element={<ProductManagement />} />
+                <Route
+                  path="transactions/:id"
+                  element={<TransactionManagement />}
+                />
+              </Route>
+            </Route>
+
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </Suspense>
+      </StoreChrome>
     </Router>
   );
 };

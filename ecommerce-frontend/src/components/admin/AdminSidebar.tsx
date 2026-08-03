@@ -7,89 +7,118 @@ import {
   FaStopwatch,
   FaTicketAlt,
 } from "react-icons/fa";
-import { HiMenu } from "react-icons/hi";
-import { Link } from "react-router-dom";
+import { HiMenu, HiX } from "react-icons/hi";
+import { Link, useLocation } from "react-router-dom";
+
+interface Topic {
+  topic: string;
+  items: {
+    title: string;
+    icon: IconType;
+    path: string;
+  }[];
+}
+
+const topics: Topic[] = [
+  {
+    topic: "Dashboard",
+    items: [
+      { title: "Dashboard", icon: FaChartBar, path: "/admin/dashboard" },
+      { title: "Products", icon: FaRegCreditCard, path: "/admin/products" },
+      { title: "Customers", icon: FaUsers, path: "/admin/customers" },
+      { title: "Transactions", icon: FaTicketAlt, path: "/admin/transactions" },
+    ],
+  },
+  {
+    topic: "Apps",
+    items: [
+      { title: "Stopwatch", icon: FaStopwatch, path: "/admin/stopwatch" },
+      { title: "Coupon", icon: FaTicketAlt, path: "/admin/coupon" },
+    ],
+  },
+];
 
 const AdminSidebar = () => {
-  const [menuOpen, setMenuOpen] = useState(false); // State to toggle sidebar visibility
-
-  interface Topic {
-    topic: string;
-    items: {
-      title: string;
-      icon: IconType;
-    }[];
-  }
-
-  const topics: Topic[] = [
-    {
-      topic: "Dashboard",
-      items: [
-        { title: "Dashboard", icon: FaChartBar },
-        { title: "Products", icon: FaRegCreditCard },
-        { title: "Customers", icon: FaUsers },
-        { title: "Transactions", icon: FaTicketAlt },
-      ],
-    },
-    {
-      topic: "Apps",
-      items: [
-        { title: "Stopwatch", icon: FaStopwatch },
-        { title: "Coupon", icon: FaTicketAlt },
-      ],
-    },
-  ];
+  const [menuOpen, setMenuOpen] = useState(false);
+  const location = useLocation();
 
   return (
     <>
-      <div className=" z-30 fixed top-3 left-4 cursor-pointer shadow-2xl shadow-black md:hidden">
-        <HiMenu
-          className="text-4xl text-black"
-          onClick={() => setMenuOpen(!menuOpen)}
-        />
-      </div>
-
-      {/* Sidebar */}
-      <aside
-        className={`md:w-1/4 h-screen md:h-auto z-40 p-4 pl-6 text-white bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-gray-10 border-r-2 border-r-gray-700 fixed top-0 transition-all duration-300 ${
-          menuOpen ? "left-0" : "left-[-300px]"
-        } md:static`}
+      <button
+        type="button"
+        aria-label="Open admin menu"
+        className="fixed left-4 top-4 z-30 rounded-md border border-admin-line bg-admin-elevated p-2 text-admin-text shadow-lg md:hidden"
+        onClick={() => setMenuOpen(true)}
       >
-        <h1 className="text-2xl mb-2 font-bold relative">
-          <div
-            className="md:hidden text-lg border-white border-2 px-2 top-[-7px] cursor-pointer absolute right-[2px]"
+        <HiMenu className="text-2xl" />
+      </button>
+
+      {menuOpen && (
+        <button
+          type="button"
+          aria-label="Close admin menu overlay"
+          className="fixed inset-0 z-30 bg-black/50 md:hidden"
+          onClick={() => setMenuOpen(false)}
+        />
+      )}
+
+      <aside
+        className={`fixed top-0 z-40 flex h-screen w-64 flex-col border-r border-admin-line bg-gradient-to-b from-admin-bg via-admin-surface to-admin-bg p-5 text-admin-text transition-transform duration-300 md:static md:w-1/4 md:min-w-[220px] md:max-w-[280px] md:translate-x-0 ${
+          menuOpen ? "translate-x-0" : "-translate-x-full"
+        }`}
+      >
+        <div className="mb-6 flex items-center justify-between">
+          <Link
+            to="/"
+            className="font-display text-xl font-semibold tracking-tight text-admin-text"
             onClick={() => setMenuOpen(false)}
           >
-            X
-          </div>{" "}
-          <Link to="/">DashCart</Link>
-        </h1>
+            DashCart
+          </Link>
+          <button
+            type="button"
+            aria-label="Close admin menu"
+            className="rounded-md border border-admin-line p-1.5 text-admin-muted transition hover:text-admin-text md:hidden"
+            onClick={() => setMenuOpen(false)}
+          >
+            <HiX className="text-lg" />
+          </button>
+        </div>
 
-        <div className="p-3">
-          {topics.map((e, index) => (
-            <div key={index} className="flex flex-col gap-3 mb-4">
-              <h2 className="text-base">{e.topic}</h2>
-              <ul className="flex flex-col">
-                {e.items.map((elements, i) => {
-                  const isActive = location.pathname.includes(
-                    `/admin/${elements.title.toLowerCase()}`
-                  );
+        <nav className="flex flex-col gap-6">
+          {topics.map((group) => (
+            <div key={group.topic}>
+              <h2 className="mb-2 px-2 text-xs font-medium uppercase tracking-wider text-admin-muted">
+                {group.topic}
+              </h2>
+              <ul className="flex flex-col gap-1">
+                {group.items.map((item) => {
+                  const isActive =
+                    location.pathname === item.path ||
+                    location.pathname.startsWith(`${item.path}/`);
                   return (
-                    <Link key={i} to={`/admin/${elements.title.toLowerCase()}`}>
-                      <li
-                        className={`cursor-pointer h-[45px] flex items-center gap-3 ml-4 px-2 py-1 rounded-lg w-[85%] ${
-                          isActive ? "bg-blue-100 text-blue-700" : ""
+                    <li key={item.path}>
+                      <Link
+                        to={item.path}
+                        onClick={() => setMenuOpen(false)}
+                        className={`flex h-11 items-center gap-3 rounded-lg px-3 text-sm transition-colors ${
+                          isActive
+                            ? "bg-admin-accent/15 font-medium text-admin-accent"
+                            : "text-admin-muted hover:bg-admin-elevated hover:text-admin-text"
                         }`}
                       >
-                        {React.createElement(elements.icon)} {elements.title}
-                      </li>
-                    </Link>
+                        {React.createElement(item.icon, {
+                          className: "text-base shrink-0",
+                        })}
+                        {item.title}
+                      </Link>
+                    </li>
                   );
                 })}
               </ul>
             </div>
           ))}
-        </div>
+        </nav>
       </aside>
     </>
   );

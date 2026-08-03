@@ -1,7 +1,6 @@
 import { ReactElement, useEffect, useState } from "react";
 import { Column } from "react-table";
 import { FaTrash } from "react-icons/fa";
-import AdminSidebar from "../../components/admin/AdminSidebar";
 import TableHOC from "../../components/admin/TableHOC";
 import { RootState } from "../../redux/store";
 import toast from "react-hot-toast";
@@ -50,7 +49,7 @@ const column: Column<DataType>[] = [
   },
 ];
 
-const Search = () => {
+const Customers = () => {
   const { user } = useSelector((state: RootState) => state.userReducer);
 
   const { isLoading, data, isError, error } = useAllUsersQuery("");
@@ -60,7 +59,7 @@ const Search = () => {
   const [deleteUser] = useDeleteUserMutation();
 
   const deleteHandler = async (userId: string) => {
-    if(user?.role!="admin") return toast.error("You're Not admin");
+    if (user?.role != "admin") return toast.error("You're Not admin");
     const res = await deleteUser({ userId, adminUserId: user!._id! });
     responseToast(res, null, "");
   };
@@ -88,7 +87,12 @@ const Search = () => {
           gender: i.gender,
           role: i.role,
           action: (
-            <button onClick={() => deleteHandler(i._id)}>
+            <button
+              type="button"
+              className="rounded-md p-2 text-red-400 transition hover:bg-red-500/15 hover:text-red-300"
+              onClick={() => deleteHandler(i._id)}
+              aria-label={`Delete ${i.name}`}
+            >
               <FaTrash />
             </button>
           ),
@@ -105,16 +109,8 @@ const Search = () => {
   )();
 
   return (
-    <div className="md:flex backgco h-screen">
-      <AdminSidebar />
-
-      {/* Table */}
-
-      <div className="md:w-3/4 overflow-auto p-5">
-        {isLoading ? <Skeleton length={20} /> : Table}
-      </div>
-    </div>
+    <div>{isLoading ? <Skeleton variant="dark" length={20} /> : Table}</div>
   );
 };
 
-export default Search;
+export default Customers;

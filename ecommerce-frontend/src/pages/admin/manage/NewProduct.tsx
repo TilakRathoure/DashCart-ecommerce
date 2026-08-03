@@ -1,7 +1,6 @@
 import { ChangeEvent, FormEvent, useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import AdminSidebar from "../../../components/admin/AdminSidebar";
 import { useNewProductMutation } from "../../../redux/api/productAPI";
 import { RootState } from "../../../redux/store";
 import { responseToast } from "../../../utils/features";
@@ -14,7 +13,7 @@ const NewProduct = () => {
   const [price, setPrice] = useState<number>(1000);
   const [stock, setStock] = useState<number>(1);
   const [photo, setPhoto] = useState<string>();
-  const [file1,setFile]=useState<File>();
+  const [file1, setFile] = useState<File>();
 
   const [newProduct] = useNewProductMutation();
   const navigate = useNavigate();
@@ -54,84 +53,89 @@ const NewProduct = () => {
   };
 
   return (
-    <div className="md:flex text-gray-100 h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900">
-      <AdminSidebar />
+    <div className="flex min-h-full items-center justify-center py-6">
+      <form
+        onSubmit={submitHandler}
+        className="admin-card flex w-full max-w-[420px] flex-col items-stretch gap-6 p-8 shadow-lg shadow-black/20"
+      >
+        <h2 className="text-center text-lg uppercase tracking-wider text-admin-text">
+          New Product
+        </h2>
 
-      <main className="md:w-3/4 h-full overflow-y-auto flex justify-center items-center">
-        <form
-          onSubmit={submitHandler}
-          className="flex flex-col items-center gap-8 p-8 w-full max-w-[400px] border-2 border-gray-700 rounded-lg shadow-gray-700 shadow-lg"
-        >
-          <h2 className="uppercase tracking-wider">New Product</h2>
-          <div className="w-full relative">
-            <label htmlFor="name" className="absolute left-0 top-[-1.5rem]">
-              Name
-            </label>
-            <input
-              id="name"
-              required
-              type="text"
-              placeholder="Name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              className="w-full p-4 border border-gray-700 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 rounded-md"
-            />
-          </div>
-          <div className="w-full relative">
-            <label className="absolute left-0 top-[-1.5rem]">Price</label>
-            <input
-              required
-              type="number"
-              placeholder="Price"
-              value={price}
-              onChange={(e) => setPrice(Number(e.target.value))}
-              className="w-full p-4  border-gray-700 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 rounded-md"
-            />
-          </div>
-          <div className="w-full relative">
-            <label className="absolute left-0 top-[-1.5rem]">Stock</label>
-            <input
-              required
-              type="number"
-              placeholder="Stock"
-              value={stock}
-              onChange={(e) => setStock(Number(e.target.value))}
-              className="w-full p-4  border-gray-700 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 rounded-md"
-            />
-          </div>
-          <div className="w-full relative">
-            <label className="absolute left-0 top-[-1.5rem]">Photo</label>
-            <input
-              required
-              accept="image/*"
-              type="file"
-              onChange={changeImageHandler}
-              className="w-full p-4 border border-gray-700 rounded-md"
-            />
-          </div>{" "}
+        <div>
+          <label htmlFor="name" className="admin-label">
+            Name
+          </label>
+          <input
+            id="name"
+            required
+            type="text"
+            placeholder="Name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            className="admin-input"
+          />
+        </div>
+
+        <div>
+          <label className="admin-label">Price</label>
+          <input
+            required
+            type="number"
+            placeholder="Price"
+            value={price}
+            onChange={(e) => setPrice(Number(e.target.value))}
+            className="admin-input"
+          />
+        </div>
+
+        <div>
+          <label className="admin-label">Stock</label>
+          <input
+            required
+            type="number"
+            placeholder="Stock"
+            value={stock}
+            onChange={(e) => setStock(Number(e.target.value))}
+            className="admin-input"
+          />
+        </div>
+
+        <div>
+          <label className="admin-label">Category</label>
           <input
             required
             type="text"
             placeholder="eg. laptop, camera etc"
             value={category}
             onChange={(e) => setCategory(e.target.value)}
+            className="admin-input"
           />
-          <div></div>
-          {photo && (
-            <img
-              src={photo}
-              alt="New Image"
-              className=" object-contain rounded-md"
-            />
-          )}
-          <button
-            type="submit"
-            className="p-4 bg-blue-600 text-white w-full rounded-md text-lg cursor-pointer"
-          >
-            Create
-          </button>
-        </form>
-      </main>
+        </div>
+
+        <div>
+          <label className="admin-label">Photo</label>
+          <input
+            required
+            accept="image/*"
+            type="file"
+            onChange={changeImageHandler}
+            className="admin-input file:mr-3 file:rounded file:border-0 file:bg-admin-accent/20 file:px-3 file:py-1 file:text-admin-accent"
+          />
+        </div>
+
+        {photo && (
+          <img
+            src={photo}
+            alt="New Image"
+            className="max-h-40 rounded-md object-contain"
+          />
+        )}
+
+        <button type="submit" className="admin-btn w-full py-3 text-base">
+          Create
+        </button>
+      </form>
     </div>
   );
 };

@@ -6,7 +6,7 @@ import {
   FaUser,
   FaSignOutAlt,
 } from "react-icons/fa";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { User } from "../types/types";
 import { signOut } from "firebase/auth";
 import { auth } from "../firebase";
@@ -23,10 +23,9 @@ const Header = ({ user }: PropsType) => {
   const { cartItems } = useSelector((state: RootState) => state.cartReducer);
 
   const location = useLocation();
-
   const adminpage = location.pathname.includes("admin");
-
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const menuRef = useRef<HTMLDivElement>(null);
 
   const logoutHandler = async () => {
     try {
@@ -38,91 +37,110 @@ const Header = ({ user }: PropsType) => {
     }
   };
 
+  useEffect(() => {
+    const onPointerDown = (event: MouseEvent) => {
+      if (
+        menuRef.current &&
+        !menuRef.current.contains(event.target as Node)
+      ) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", onPointerDown);
+    return () => document.removeEventListener("mousedown", onPointerDown);
+  }, []);
+
   return (
-    <nav className="backdrop-blur-5 z-50 bg-transparent md:px-10 flex justify-between items-center space-x-4 p-4">
-      <Link to="/">
-        <p
-          className={`${
-            adminpage && "pl-12"
-          } text-3xl font-semibold cursor-pointer`}
-        >
-          DashCart
-        </p>
-      </Link>
-
-      <div className="relative flex gap-4 items-center">
-        <Link
-          onClick={() => setIsOpen(false)}
-          to={"/"}
-          className="text-gray-700 hover:text-blue-600 text-xl tracking-wider"
-        >
-          HOME
-        </Link>
-        <Link
-          onClick={() => setIsOpen(false)}
-          to={"/search"}
-          className="text-gray-700 hover:text-blue-600 text-xl"
-        >
-          <FaSearch />
-        </Link>
-        <Link
-          onClick={() => setIsOpen(false)}
-          to={"/cart"}
-          className="relative text-gray-700 hover:text-blue-600 text-xl"
-        >
-          <div className="absolute w-[10px] h-[15px] -top-[4px] right-0 rounded-md text-center text-xs bg-red-600 text-white">
-            {cartItems.length}
-          </div>
-          <FaShoppingBag />
+    <nav className="sticky top-0 z-50 border-b border-store-line bg-white/80 backdrop-blur-md">
+      <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 md:px-10">
+        <Link to="/">
+          <p
+            className={`${
+              adminpage ? "pl-12" : ""
+            } font-display text-2xl font-bold tracking-tight text-store-text transition-colors hover:text-store-accent md:text-3xl`}
+          >
+            DashCart
+          </p>
         </Link>
 
-        {user?._id ? (
-          <>
-            <button
-              onClick={() => setIsOpen((prev) => !prev)}
-              className="text-gray-700 hover:text-blue-600 text-xl"
-            >
-              <FaUser />
-            </button>
-            <dialog
-              open={isOpen}
-              className="pt-5 border border-gray-300 rounded p-2 h-[200px] w-[150px] absolute top-10 right-0"
-            >
-              <div className="text-xl flex flex-col items-center space-y-1">
-                {user.role === "admin" && (
+        <div className="relative flex items-center gap-1 sm:gap-2" ref={menuRef}>
+          <Link
+            onClick={() => setIsOpen(false)}
+            to="/"
+            className="hidden rounded-md px-3 py-2 text-sm font-medium tracking-wide text-store-muted transition-colors hover:text-store-accent sm:inline-block"
+          >
+            Home
+          </Link>
+          <Link
+            onClick={() => setIsOpen(false)}
+            to="/search"
+            aria-label="Search"
+            className="rounded-md p-2.5 text-store-muted transition-colors hover:text-store-accent"
+          >
+            <FaSearch className="text-lg" />
+          </Link>
+          <Link
+            onClick={() => setIsOpen(false)}
+            to="/cart"
+            aria-label="Cart"
+            className="relative rounded-md p-2.5 text-store-muted transition-colors hover:text-store-accent"
+          >
+            {cartItems.length > 0 && (
+              <span className="absolute right-1 top-1 flex h-4 min-w-4 items-center justify-center rounded bg-store-accent px-1 text-[10px] font-semibold text-white">
+                {cartItems.length}
+              </span>
+            )}
+            <FaShoppingBag className="text-lg" />
+          </Link>
+
+          {user?._id ? (
+            <>
+              <button
+                onClick={() => setIsOpen((prev) => !prev)}
+                aria-label="Account menu"
+                className="rounded-md p-2.5 text-store-muted transition-colors hover:text-store-accent"
+              >
+                <FaUser className="text-lg" />
+              </button>
+              {isOpen && (
+                <div className="absolute right-0 top-12 w-44 overflow-hidden rounded-md border border-store-line bg-store-surface py-1 shadow-lg">
+                  {user.role === "admin" && (
+                    <Link
+                      onClick={() => setIsOpen(false)}
+                      to="/admin/dashboard"
+                      className="block px-4 py-2.5 text-sm text-store-text transition-colors hover:bg-store-bg hover:text-store-accent"
+                    >
+                      Admin
+                    </Link>
+                  )}
                   <Link
                     onClick={() => setIsOpen(false)}
-                    to="/admin/dashboard"
-                    className="text-gray-700 hover:text-blue-600"
+                    to="/orders"
+                    className="block px-4 py-2.5 text-sm text-store-text transition-colors hover:bg-store-bg hover:text-store-accent"
                   >
-                    Admin
+                    Orders
                   </Link>
-                )}
-
-                <Link
-                  onClick={() => setIsOpen(false)}
-                  to="/orders"
-                  className="text-gray-700 hover:text-blue-600"
-                >
-                  Orders
-                </Link>
-                <button
-                  onClick={logoutHandler}
-                  className="text-gray-700 hover:text-blue-600"
-                >
-                  <FaSignOutAlt />
-                </button>
-              </div>
-            </dialog>
-          </>
-        ) : (
-          <Link
-            to={"/login"}
-            className="text-gray-700 hover:text-blue-600 text-xl"
-          >
-            <FaSignInAlt />
-          </Link>
-        )}
+                  <button
+                    onClick={logoutHandler}
+                    className="flex w-full items-center gap-2 px-4 py-2.5 text-left text-sm text-store-muted transition-colors hover:bg-store-bg hover:text-store-accent"
+                  >
+                    <FaSignOutAlt />
+                    Logout
+                  </button>
+                </div>
+              )}
+            </>
+          ) : (
+            <Link
+              to="/login"
+              className="store-btn-ghost ml-1 !px-3 !py-1.5 text-sm"
+            >
+              <FaSignInAlt />
+              <span className="hidden sm:inline">Login</span>
+            </Link>
+          )}
+        </div>
       </div>
     </nav>
   );

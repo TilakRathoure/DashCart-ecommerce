@@ -2,14 +2,13 @@ import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { FaTrash } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
-import AdminSidebar from "../../../components/admin/AdminSidebar";
 import { Skeleton } from "../../../components/Loader";
 import {
   useDeleteProductMutation,
   useProductDetailsQuery,
   useUpdateProductMutation,
 } from "../../../redux/api/productAPI";
-import { RootState} from "../../../redux/store";
+import { RootState } from "../../../redux/store";
 import { responseToast } from "../../../utils/features";
 
 const Productmanagement = () => {
@@ -96,117 +95,110 @@ const Productmanagement = () => {
   if (isError) return <Navigate to={"/404"} />;
 
   return (
-    <div className="flex h-screen text-gray-100">
-      <AdminSidebar />
+    <div className="flex flex-col gap-8 text-admin-text lg:flex-row">
+      {isLoading ? (
+        <Skeleton variant="dark" length={20} />
+      ) : (
+        <>
+          <section className="admin-card flex w-full flex-col items-center gap-4 p-6 lg:w-1/3">
+            <strong className="text-sm text-admin-muted">
+              ID - {data?.product._id}
+            </strong>
+            <img
+              src={photo}
+              alt="Product"
+              className="h-48 w-full rounded-lg object-cover"
+            />
+            <p className="text-lg font-medium uppercase tracking-wide">{name}</p>
+            {stock > 0 ? (
+              <span className="admin-status-green">{stock} Available</span>
+            ) : (
+              <span className="admin-status-red">Not Available</span>
+            )}
+            <h3 className="text-xl font-bold">₹{price}</h3>
+            <button
+              type="button"
+              className="admin-btn-danger mt-2"
+              onClick={deleteHandler}
+            >
+              <FaTrash /> Delete
+            </button>
+          </section>
 
-      <main className="flex gap-10 p-8 w-full bg-gray-900 overflow-y-auto">
-        {isLoading ? (
-          <Skeleton length={20} />
-        ) : (
-          <>
-            {/* Product Details Section */}
-            <section className="w-1/3 h-[85vh] p-6 bg-gray-800 border border-gray-700 rounded-lg shadow-lg flex flex-col items-center gap-4">
-              <strong className="text-sm">ID - {data?.product._id}</strong>
-              <img
-                src={photo}
-                alt="Product"
-                className="w-full h-48 object-cover rounded-lg"
-              />
-              <p className="text-lg font-medium uppercase tracking-wide">{name}</p>
-              {stock > 0 ? (
-                <span className="text-green-500">{stock} Available</span>
-              ) : (
-                <span className="text-red-500">Not Available</span>
+          <article className="admin-card w-full p-6 lg:w-2/3">
+            <form onSubmit={submitHandler} className="flex flex-col gap-5">
+              <h2 className="text-xl font-bold uppercase tracking-wide">
+                Manage
+              </h2>
+
+              <div>
+                <label className="admin-label">Name</label>
+                <input
+                  type="text"
+                  placeholder="Name"
+                  value={nameUpdate}
+                  onChange={(e) => setNameUpdate(e.target.value)}
+                  className="admin-input"
+                />
+              </div>
+
+              <div>
+                <label className="admin-label">Price</label>
+                <input
+                  type="number"
+                  placeholder="Price"
+                  value={priceUpdate}
+                  onChange={(e) => setPriceUpdate(Number(e.target.value))}
+                  className="admin-input"
+                />
+              </div>
+
+              <div>
+                <label className="admin-label">Stock</label>
+                <input
+                  type="number"
+                  placeholder="Stock"
+                  value={stockUpdate}
+                  onChange={(e) => setStockUpdate(Number(e.target.value))}
+                  className="admin-input"
+                />
+              </div>
+
+              <div>
+                <label className="admin-label">Category</label>
+                <input
+                  type="text"
+                  placeholder="e.g., Laptop, Camera, etc."
+                  value={categoryUpdate}
+                  onChange={(e) => setCategoryUpdate(e.target.value)}
+                  className="admin-input"
+                />
+              </div>
+
+              <div>
+                <label className="admin-label">Photo</label>
+                <input
+                  type="file"
+                  onChange={changeImageHandler}
+                  className="admin-input cursor-pointer file:mr-3 file:rounded file:border-0 file:bg-admin-accent/20 file:px-3 file:py-1 file:text-admin-accent"
+                />
+              </div>
+
+              {photoUpdate && (
+                <img
+                  src={photoUpdate}
+                  alt="New Product"
+                  className="mt-2 h-20 w-20 rounded-md object-cover"
+                />
               )}
-              <h3 className="text-xl font-bold text-center">₹{price}</h3>
-              <button
-                className="flex items-center gap-2 px-4 py-2 mt-4 bg-red-600 text-white rounded-md hover:bg-red-700"
-                onClick={deleteHandler}
-              >
-                <FaTrash /> Delete
+
+              <button type="submit" className="admin-btn w-full py-3 text-base">
+                Update
               </button>
-            </section>
-
-            {/* Product Management Form */}
-            <article className="w-2/3 p-6 bg-gray-800 border border-gray-700 rounded-lg shadow-lg">
-              <form
-                onSubmit={submitHandler}
-                className="flex flex-col gap-6"
-              >
-                <h2 className="text-xl font-bold uppercase tracking-wide">Manage</h2>
-
-                <div>
-                  <label className="block text-sm mb-1">Name</label>
-                  <input
-                    type="text"
-                    placeholder="Name"
-                    value={nameUpdate}
-                    onChange={(e) => setNameUpdate(e.target.value)}
-                    className="w-full p-3 border border-gray-700 bg-gray-900 rounded-md focus:outline-none focus:ring focus:ring-blue-500"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm mb-1">Price</label>
-                  <input
-                    type="number"
-                    placeholder="Price"
-                    value={priceUpdate}
-                    onChange={(e) => setPriceUpdate(Number(e.target.value))}
-                    className="w-full p-3 border border-gray-700 bg-gray-900 rounded-md focus:outline-none focus:ring focus:ring-blue-500"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm mb-1">Stock</label>
-                  <input
-                    type="number"
-                    placeholder="Stock"
-                    value={stockUpdate}
-                    onChange={(e) => setStockUpdate(Number(e.target.value))}
-                    className="w-full p-3 border border-gray-700 bg-gray-900 rounded-md focus:outline-none focus:ring focus:ring-blue-500"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm mb-1">Category</label>
-                  <input
-                    type="text"
-                    placeholder="e.g., Laptop, Camera, etc."
-                    value={categoryUpdate}
-                    onChange={(e) => setCategoryUpdate(e.target.value)}
-                    className="w-full p-3 border border-gray-700 bg-gray-900 rounded-md focus:outline-none focus:ring focus:ring-blue-500"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm mb-1">Photo</label>
-                  <input
-                    type="file"
-                    onChange={changeImageHandler}
-                    className="w-full p-3 border border-gray-700 bg-gray-900 rounded-md cursor-pointer focus:outline-none focus:ring focus:ring-blue-500"
-                  />
-                </div>
-
-                {photoUpdate && (
-                  <img
-                    src={photoUpdate}
-                    alt="New Product"
-                    className="w-20 h-20 object-cover rounded-md mt-4"
-                  />
-                )}
-
-                <button
-                  type="submit"
-                  className="w-full p-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 text-lg"
-                >
-                  Update
-                </button>
-              </form>
-            </article>
-          </>
-        )}
-      </main>
+            </form>
+          </article>
+        </>
+      )}
     </div>
   );
 };

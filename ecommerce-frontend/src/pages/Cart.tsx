@@ -68,8 +68,11 @@ const Cart = () => {
   }, [cartItems]);
 
   return (
-    <div className="flex gap-2 justify-between p-8 h-[calc(100vh-4rem)]">
-      <main className="w-[70%] sm:w-[60%] flex flex-col gap-3 bg-gray-100 p-4 overflow-y-auto">
+    <div className="store-shell mx-auto flex min-h-[calc(100vh-4rem)] max-w-7xl flex-col gap-6 px-4 py-8 md:flex-row md:gap-8 md:px-10">
+      <main className="flex flex-1 flex-col gap-3 overflow-y-auto rounded-md border border-store-line bg-store-surface p-4 md:p-6">
+        <h1 className="mb-2 font-display text-2xl font-bold text-store-text md:text-3xl">
+          Your cart
+        </h1>
         {cartItems.length > 0 ? (
           cartItems.map((i, idx) => (
             <CartItemCard
@@ -81,45 +84,68 @@ const Cart = () => {
             />
           ))
         ) : (
-          <h1 className="text-center text-2xl">No Items Added</h1>
+          <div className="flex flex-1 flex-col items-center justify-center gap-4 py-16 text-center">
+            <h2 className="font-display text-2xl font-semibold text-store-text">
+              No items added
+            </h2>
+            <p className="text-sm text-store-muted">
+              Browse the catalog and add something you like.
+            </p>
+            <Link to="/search" className="store-btn">
+              Shop products
+            </Link>
+          </div>
         )}
       </main>
 
-      <aside className=" w-[30%] sm:w-[40%] text-base md:text-lg flex flex-col gap-6 sm:p-4">
-        <p className="">Subtotal: ₹{subtotal}</p>
-        <p className="">Shipping Charges: ₹{shippingCharges}</p>
-        <p className="">Tax: ₹{tax}</p>
-        <p className="">
-          Discount: <em className="text-red-500"> - ₹{discount}</em>
-        </p>
-        <p className="text-lg font-bold">
-          <b>Total: ₹{total}</b>
-        </p>
+      <aside className="flex w-full flex-col gap-4 rounded-md border border-store-line bg-store-surface p-5 md:w-[36%] md:max-w-md md:p-6">
+        <h2 className="font-display text-xl font-bold text-store-text">
+          Order summary
+        </h2>
+        <div className="space-y-3 text-sm text-store-muted md:text-base">
+          <p className="flex justify-between">
+            <span>Subtotal</span>
+            <span className="text-store-text">₹{subtotal}</span>
+          </p>
+          <p className="flex justify-between">
+            <span>Shipping</span>
+            <span className="text-store-text">₹{shippingCharges}</span>
+          </p>
+          <p className="flex justify-between">
+            <span>Tax</span>
+            <span className="text-store-text">₹{tax}</span>
+          </p>
+          <p className="flex justify-between">
+            <span>Discount</span>
+            <em className="not-italic text-red-500">- ₹{discount}</em>
+          </p>
+          <p className="flex justify-between border-t border-store-line pt-3 font-display text-lg font-bold text-store-text">
+            <span>Total</span>
+            <span>₹{total}</span>
+          </p>
+        </div>
 
         <input
           type="text"
-          placeholder="Coupon Code"
+          placeholder="Coupon code"
           value={couponCode}
           onChange={(e) => setCouponCode(e.target.value)}
-          className="p-4 border border-gray-300 rounded-md mt-8"
+          className="store-input mt-2"
         />
 
         {couponCode &&
           (isValidCouponCode ? (
-            <span className="text-green-500">
-              ₹{discount} off using the <code>{couponCode}</code>
+            <span className="text-sm text-teal-700">
+              ₹{discount} off using <code className="font-medium">{couponCode}</code>
             </span>
           ) : (
-            <span className="text-red-500 flex items-center gap-1">
-              Invalid Coupon <VscError />
+            <span className="flex items-center gap-1 text-sm text-red-500">
+              Invalid coupon <VscError />
             </span>
           ))}
 
         {cartItems.length > 0 && (
-          <Link
-            to="/shipping"
-            className="bg-blue-500 text-white py-4 px-1 sm:px-4 rounded-md uppercase tracking-wide hover:opacity-80"
-          >
+          <Link to="/shipping" className="store-btn mt-2 w-full !py-3 uppercase tracking-wide">
             Checkout
           </Link>
         )}
