@@ -41,13 +41,13 @@
 
 ## Screenshots
 
-![Dashboard 1](https://github.com/user-attachments/assets/5a60f07b-ffe2-4d3e-a698-331b8d6e8238)
+![DashCart homepage](docs/screenshots/home.png)
 
-![Dashboard 2](https://github.com/user-attachments/assets/fbc62095-875d-4e32-8c17-ee6890c4bf90)
+![Product catalog](docs/screenshots/storefront.png)
 
-![Dashboard 3](https://github.com/user-attachments/assets/530234db-874f-4a31-8d80-4064cabde195)
+![Admin dashboard](docs/screenshots/dashboard.png)
 
-![Dashboard 4](https://github.com/user-attachments/assets/ba564ffa-966c-46a3-aeab-34b5a301e206)
+![Admin products](docs/screenshots/admin-products.png)
 
 ---
 
