@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { Skeleton } from "../components/Loader";
+import { ProductGridSkeleton } from "../components/Loader";
 import ProductCard from "../components/Product-card";
 import { useLatestProductsQuery } from "../redux/api/productAPI";
 import { addToCart } from "../redux/reducer/cartReducer";
@@ -155,7 +155,7 @@ const Home = () => {
           transition={{ duration: 0.6, delay: 0.1 }}
         >
           {isLoading ? (
-            <Skeleton width="80vw" />
+            <ProductGridSkeleton count={8} className="contents" />
           ) : (
             data?.products.map((i, index) => (
               <motion.div

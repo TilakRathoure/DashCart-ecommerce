@@ -59,3 +59,56 @@ export const Skeleton = ({
     </div>
   );
 };
+
+export const ProductCardSkeleton = () => (
+  <div
+    className="flex w-[13.5rem] flex-col overflow-hidden rounded-md border border-store-line bg-store-surface shadow-sm"
+    aria-hidden
+  >
+    <div className="h-[13rem] animate-pulse bg-store-bg" />
+    <div className="flex flex-col gap-2 border-t border-store-line p-4">
+      <div className="h-4 w-4/5 animate-pulse rounded-md bg-store-bg" />
+      <div className="h-5 w-1/3 animate-pulse rounded-md bg-store-bg" />
+    </div>
+  </div>
+);
+
+interface ProductGridSkeletonProps {
+  count?: number;
+  className?: string;
+}
+
+export const ProductGridSkeleton = ({
+  count = 8,
+  className = "flex flex-wrap justify-center gap-4 md:justify-start",
+}: ProductGridSkeletonProps) => (
+  <div className={className} aria-busy="true" aria-label="Loading products">
+    {Array.from({ length: count }, (_, idx) => (
+      <ProductCardSkeleton key={idx} />
+    ))}
+  </div>
+);
+
+export const ProductDetailsSkeleton = () => (
+  <div className="store-shell min-h-[calc(100vh-4rem)]" aria-busy="true">
+    <div className="mx-auto max-w-7xl px-4 py-8 md:px-10 md:py-12">
+      <div className="h-4 w-32 animate-pulse rounded-md bg-store-line" />
+
+      <div className="mt-6 grid items-stretch gap-8 lg:grid-cols-2 lg:gap-12">
+        <div className="min-h-[320px] animate-pulse rounded-md border border-store-line bg-store-surface md:min-h-[480px]" />
+
+        <div className="flex flex-col justify-center">
+          <div className="h-3 w-24 animate-pulse rounded-md bg-store-line" />
+          <div className="mt-3 h-10 w-3/4 max-w-md animate-pulse rounded-md bg-store-line" />
+          <div className="mt-4 h-9 w-28 animate-pulse rounded-md bg-store-line" />
+          <div className="mt-5 h-8 w-32 animate-pulse rounded-md bg-store-line" />
+          <div className="mt-6 h-16 max-w-md animate-pulse rounded-md bg-store-line" />
+          <div className="mt-8 flex flex-wrap gap-3">
+            <div className="h-12 w-36 animate-pulse rounded-md bg-store-line" />
+            <div className="h-12 w-28 animate-pulse rounded-md bg-store-line" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+);

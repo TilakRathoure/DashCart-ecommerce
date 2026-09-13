@@ -5,7 +5,7 @@ import {
   useSearchProductsQuery,
 } from "../redux/api/productAPI";
 import toast from "react-hot-toast";
-import { Skeleton } from "../components/Loader";
+import { ProductGridSkeleton } from "../components/Loader";
 import { CartItem } from "../types/types";
 import { addToCart } from "../redux/reducer/cartReducer";
 import { useDispatch } from "react-redux";
@@ -217,7 +217,10 @@ const Search = () => {
         </div>
 
         {productLoading ? (
-          <Skeleton length={10} />
+          <ProductGridSkeleton
+            count={8}
+            className="flex flex-wrap justify-center gap-4 md:justify-start md:gap-6"
+          />
         ) : searchedData?.products.length ? (
           <div className="flex flex-wrap justify-center gap-4 md:justify-start md:gap-6">
             {searchedData.products.map((i) => (

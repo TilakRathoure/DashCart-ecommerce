@@ -2,7 +2,7 @@ import { Link, useParams } from "react-router-dom";
 import { useProductDetailsQuery } from "../redux/api/productAPI";
 import { CustomError } from "../types/api-types";
 import toast from "react-hot-toast";
-import Loader from "../components/Loader";
+import { ProductDetailsSkeleton } from "../components/Loader";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../redux/store";
 import { CartItem } from "../types/types";
@@ -37,7 +37,7 @@ const Productdetails = () => {
   }
 
   if (isLoading) {
-    return <Loader />;
+    return <ProductDetailsSkeleton />;
   }
 
   const product = data?.product;
