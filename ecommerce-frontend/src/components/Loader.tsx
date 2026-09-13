@@ -24,11 +24,28 @@ const Loader = ({ variant = "light" }: LoaderProps) => {
   );
 };
 
-/** Suspense fallback that follows storefront vs admin theme from the URL. */
+/** Quiet Suspense fallback for route chunk loads — keeps chrome stable. */
 export const RouteLoader = () => {
   const { pathname } = useLocation();
   const isAdmin = pathname.startsWith("/admin");
-  return <Loader variant={isAdmin ? "dark" : "light"} />;
+
+  return (
+    <section
+      className={`flex min-h-[calc(100vh-4rem)] w-full items-center justify-center ${
+        isAdmin ? "bg-admin-bg" : "bg-store-bg"
+      }`}
+      aria-busy="true"
+      aria-label="Loading page"
+    >
+      <div
+        className={`h-10 w-10 animate-spin rounded-full border-[3px] ${
+          isAdmin
+            ? "border-admin-line border-t-admin-accent"
+            : "border-store-line border-t-store-accent"
+        }`}
+      />
+    </section>
+  );
 };
 
 export default Loader;
