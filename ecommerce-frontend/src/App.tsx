@@ -2,7 +2,7 @@ import { onAuthStateChanged } from "firebase/auth";
 import { Suspense, lazy, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
-import Loader, { RouteLoader } from "./components/Loader";
+import Loader from "./components/Loader";
 import ProtectedRoute from "./components/protected-route";
 import StoreChrome from "./components/StoreChrome";
 import AdminLayout from "./components/admin/AdminLayout";
@@ -11,28 +11,26 @@ import { getUser } from "./redux/api/userAPI";
 import { userExist, userNotExist } from "./redux/reducer/userReducer";
 import { RootState } from "./redux/store";
 
-const Home = lazy(() => import("./pages/Home"));
-const Search = lazy(() => import("./pages/Search"));
-const Cart = lazy(() => import("./pages/Cart"));
-const Shipping = lazy(() => import("./pages/Shipping"));
-const Login = lazy(() => import("./pages/Login"));
-const Orders = lazy(() => import("./pages/order"));
-const OrderDetails = lazy(() => import("./pages/order-details"));
-const NotFound = lazy(() => import("./pages/not-found"));
-const Checkout = lazy(() => import("./pages/checkout"));
+// Storefront pages load eagerly so route switches never flash a Suspense loader.
+import Home from "./pages/Home";
+import Search from "./pages/Search";
+import Cart from "./pages/Cart";
+import Shipping from "./pages/Shipping";
+import Login from "./pages/Login";
+import Orders from "./pages/order";
+import OrderDetails from "./pages/order-details";
+import NotFound from "./pages/not-found";
+import Checkout from "./pages/checkout";
+import Productdetails from "./pages/Productdetails";
 
-// Admin Routes Importing
+// Admin stays lazy — visited less often and is a heavier chunk.
 const Dashboard = lazy(() => import("./pages/admin/Dashboard"));
 const Products = lazy(() => import("./pages/admin/Products"));
 const Customers = lazy(() => import("./pages/admin/Customers"));
 const Transaction = lazy(() => import("./pages/admin/Transactions"));
-// const Barcharts = lazy(() => import("./pages/admin/charts/Bar"));
-// const Piecharts = lazy(() => import("./pages/admin/charts/Pie"));
-// const Linecharts = lazy(() => import("./pages/admin/charts/Line"));
 const Coupon = lazy(() => import("./pages/admin/applications/Coupon"));
 const Stopwatch = lazy(() => import("./pages/admin/applications/Stopwatch"));
 const NewProduct = lazy(() => import("./pages/admin/manage/NewProduct"));
-const Productdetails = lazy(() => import("./pages/Productdetails"));
 const ProductManagement = lazy(
   () => import("./pages/admin/manage/ProductManage")
 );
@@ -48,39 +46,36 @@ const App = () => {
   const { user } = useSelector((state: RootState) => state.userReducer);
 
   useEffect(() => {
-    console.log("USE EFFECT WORKING");
-
-    onAuthStateChanged(auth, async (user) => {
-      setLoading(true);
-      console.log("CHANGE AUTH WORKING");
-
+    const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
       try {
-        if (user) {
-          const data = await getUser(user.uid);
+        if (firebaseUser) {
+          const data = await getUser(firebaseUser.uid);
           dispatch(userExist(data.user));
         } else {
           dispatch(userNotExist());
         }
       } catch (error) {
         console.log(error);
+        dispatch(userNotExist());
       } finally {
         setLoading(false);
       }
     });
-  }, []);
+
+    return () => unsubscribe();
+  }, [dispatch]);
 
   return loading ? (
     <Loader />
   ) : (
     <Router>
       <StoreChrome user={user}>
-        <Suspense fallback={<RouteLoader />}>
+        <Suspense fallback={null}>
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/search" element={<Search />} />
             <Route path="/cart" element={<Cart />} />
             <Route path="/:id" element={<Productdetails />} />
-            {/* Not logged In Route */}
             <Route
               path="/login"
               element={
@@ -89,7 +84,6 @@ const App = () => {
                 </ProtectedRoute>
               }
             />
-            {/* Logged In User Routes */}
             <Route
               element={
                 <ProtectedRoute
@@ -105,7 +99,6 @@ const App = () => {
               <Route path="/pay" element={<Checkout />} />
             </Route>
 
-            {/* Admin Routes */}
             <Route path="/admin" element={<AdminLayout />}>
               <Route path="dashboard" element={<Dashboard />} />
               <Route path="products" element={<Products />} />
@@ -122,11 +115,6 @@ const App = () => {
                   />
                 }
               >
-                {/* Charts */}
-                {/* <Route path="bar" element={<Barcharts />} /> */}
-                {/* <Route path="pie" element={<Piecharts />} /> */}
-                {/* <Route path="line" element={<Linecharts />} /> */}
-
                 <Route path="products/new" element={<NewProduct />} />
                 <Route path="products/:id" element={<ProductManagement />} />
                 <Route
