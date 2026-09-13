@@ -21,6 +21,9 @@ interface PropsType {
 
 const Header = ({ user }: PropsType) => {
   const { cartItems } = useSelector((state: RootState) => state.cartReducer);
+  const { loading: authLoading } = useSelector(
+    (state: RootState) => state.userReducer
+  );
 
   const location = useLocation();
   const adminpage = location.pathname.includes("admin");
@@ -94,7 +97,12 @@ const Header = ({ user }: PropsType) => {
             <FaShoppingBag className="text-lg" />
           </Link>
 
-          {user?._id ? (
+          {authLoading ? (
+            <div
+              className="ml-1 h-9 w-9 animate-pulse rounded-md bg-store-bg"
+              aria-hidden
+            />
+          ) : user?._id ? (
             <>
               <button
                 onClick={() => setIsOpen((prev) => !prev)}

@@ -1,6 +1,8 @@
 import { ReactElement } from "react";
 import toast from "react-hot-toast";
+import { useSelector } from "react-redux";
 import { Navigate, Outlet } from "react-router-dom";
+import { RootState } from "../redux/store";
 
 interface Props {
   children?: ReactElement;
@@ -8,7 +10,7 @@ interface Props {
   adminOnly?: boolean;
   admin?: boolean;
   redirect?: string;
-  message?:string;
+  message?: string;
 }
 
 const ProtectedRoute = ({
@@ -16,16 +18,22 @@ const ProtectedRoute = ({
   children,
   adminOnly,
   admin,
-  message=""
+  redirect = "/login",
+  message = "",
 }: Props) => {
-  if (!isAuthenticated){
-    if(message) toast.error(message);
-    return <Navigate to="/login" />;
+  const { loading } = useSelector((state: RootState) => state.userReducer);
+
+  // Wait for Firebase/session resolve — don't bounce users while auth is unknown.
+  if (loading) return null;
+
+  if (!isAuthenticated) {
+    if (message) toast.error(message);
+    return <Navigate to={redirect} replace />;
   }
 
-  if (adminOnly && !admin){
+  if (adminOnly && !admin) {
     toast.error("Dont have admin access");
-    return <Navigate to="/admin/dashboard" />;
+    return <Navigate to="/admin/dashboard" replace />;
   }
 
   return children ? children : <Outlet />;

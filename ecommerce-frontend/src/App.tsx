@@ -1,8 +1,7 @@
 import { onAuthStateChanged } from "firebase/auth";
-import { Suspense, lazy, useEffect, useState } from "react";
+import { Suspense, lazy, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
-import Loader from "./components/Loader";
 import ProtectedRoute from "./components/protected-route";
 import StoreChrome from "./components/StoreChrome";
 import AdminLayout from "./components/admin/AdminLayout";
@@ -41,8 +40,6 @@ const TransactionManagement = lazy(
 const App = () => {
   const dispatch = useDispatch();
 
-  const [loading, setLoading] = useState<boolean>(true);
-
   const { user } = useSelector((state: RootState) => state.userReducer);
 
   useEffect(() => {
@@ -57,17 +54,13 @@ const App = () => {
       } catch (error) {
         console.log(error);
         dispatch(userNotExist());
-      } finally {
-        setLoading(false);
       }
     });
 
     return () => unsubscribe();
   }, [dispatch]);
 
-  return loading ? (
-    <Loader />
-  ) : (
+  return (
     <Router>
       <StoreChrome user={user}>
         <Suspense fallback={null}>
@@ -79,7 +72,10 @@ const App = () => {
             <Route
               path="/login"
               element={
-                <ProtectedRoute isAuthenticated={user ? false : true}>
+                <ProtectedRoute
+                  isAuthenticated={user ? false : true}
+                  redirect="/"
+                >
                   <Login />
                 </ProtectedRoute>
               }
